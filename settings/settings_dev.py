@@ -94,9 +94,8 @@ LINKS = [
 DEFAULT_CATEGORY = 'uncategorized'
 # A list of files to copy from the source to the destination
 EXTRA_PATH_METADATA = {
-  'extra/.htaccess' : { 'path' : '../.htaccess'},
-  'extra/robots.txt' : { 'path' : '../robots.txt' },
-  'extra/favicon.ico' : { 'path': '../favicon.ico' },
+    'extra/.nojekyll' : { 'path' : '../.nojekyll'},
+    'extra/favicon.ico' : { 'path': '../favicon.ico' },
 }
 # Folders to copy to <output>/static/...:
 STATIC_SAVE_AS = 'static/{path}'
