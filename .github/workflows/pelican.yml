@@ -12,4 +12,5 @@ jobs:
       id-token: "write"
     with:
       settings: "./settings/settings_prod.py"
+      siteurl: "https://www.bytefish.de"
       requirements: "pelican[markdown]"
