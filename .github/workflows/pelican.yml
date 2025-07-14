@@ -11,4 +11,5 @@ jobs:
       pages: "write"
       id-token: "write"
     with:
-      settings: "settings/settings_prod.py"
+      settings: "./settings/settings_prod.py"
+      requirements: "pelican[markdown]"
