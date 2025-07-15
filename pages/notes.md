@@ -8,6 +8,16 @@ summary: Notes, Ideas and Links
 
 [TOC]
 
+## 2025-07-15: Disappearing and Resurrecting the Page ##
+
+Last week, after 22 years of running this page, I thought: It’s enough! Google is de-ranking the page. LLMs are stealing the content, and on top “AI startups” crawling the page to death. 
+
+So I have deleted my domains, and then canceled the contract with my host of 22 years. Most of my GitHub repositories have been set into Private mode.
+
+The lesson here: Never rely on the mental well-being of a single open source developer for anything, you are running in production. These developers could disappear from one moment to the next.
+
+While on vacation I re-registered my domain and moved it to GitHub Pages and am going to move to Cloudflare as a Domain Registrar, so the costs of this page are reduced.
+
 ## 2025-06-29: Importing Routing Data for pgRouting on Windows ##
 
 `pgRouting` is a library for adding Routing capabilities to PostgreSQL. However the import using `osm2pgrouting` does not 
