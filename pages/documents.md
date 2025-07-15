@@ -27,8 +27,8 @@ Here are some documents we wrote. Some of them are in german, but they'll get tr
       <tr>
           <td>Downloads</td>
           <td>
-              <a href="https://www.bytefish.de/pdf/facerec_python.pdf">PDF (Python version, English)</a>, 
-              <a href="https://www.bytefish.de/pdf/facerec_octave.pdf">PDF (GNU Octave/MATLAB version, English)</a>
+              <a href="https://www.bytefish.de/static/pdf/facerec_python.pdf">PDF (Python version, English)</a>, 
+              <a href="https://www.bytefish.de/static/pdf/facerec_octave.pdf">PDF (GNU Octave/MATLAB version, English)</a>
           </td>
       </tr>
       <tr>
@@ -53,7 +53,7 @@ Here are some documents we wrote. Some of them are in german, but they'll get tr
       <tr>
           <td>Downloads</td>
           <td>
-              <a href="https://www.bytefish.de/pdf/machinelearning.pdf">PDF (English)</a>
+              <a href="https://www.bytefish.de/static/pdf/machinelearning.pdf">PDF (English)</a>
           </td>
       </tr>
       </tbody>
