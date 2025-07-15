@@ -14,4 +14,4 @@ So who am I writing all this for?
 
 Most of my repositories however have now been switched into private mode. And if you need access to any of the repositories here, then just let me know.
 
-My mail address is philipp@bytefish.de, the Issue Tracker on this page’s GitHub repository has been deactivated.
+My mail address is pwag86@gmail.com, the Issue Tracker on this page’s GitHub repository has been deactivated.
