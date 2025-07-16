@@ -8,6 +8,12 @@ summary: Notes, Ideas and Links
 
 [TOC]
 
+## 2025-07-16: Taking the Repositories to Private ##
+
+I have put most of my repositories into private mode. Why? Because I don’t want to feed LLM training sets anymore and see my tutorials and code copies verbatim without proper attribution.
+
+If you need access to any of the repositories, I am more than happy to share the code with you. But it’s going to take you at least a mail or an issue in this page issue tracker, to ask for it.
+
 ## 2025-07-15: Disappearing and Resurrecting the Page ##
 
 Last week, after 22 years of running this page, I thought: It’s enough! Google is de-ranking the page. LLMs are stealing the content, and on top “AI startups” crawling the page to death. 
