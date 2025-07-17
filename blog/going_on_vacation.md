@@ -12,6 +12,6 @@ It’s quite hard to keep two five year old girls entertained, when the sun has 
 
 So I’ve moved this domain to Hetzner as a Domain Registrar (Cloudflare doesn’t offer a .de TLD) and the page is now served using GitHub Pages. This is going to reduce my costs by *a lot*. 
 
-I got rid of bytefish.dev, bytefish.net and bytefish.org. I have registered them back in the days, but they have been to pricy. So let domain grabbers pay for and enjoy them!
+I got rid of bytefish.dev, bytefish.net and bytefish.org. I have registered them back in the days, but they have been too pricy. So let domain grabbers pay for and enjoy them!
 
 I've also deleted my Mastodon account, because I think any social media, wether it's dictated by algorithms or not, is a boring echo chamber.
