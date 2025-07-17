@@ -83,12 +83,6 @@ SECTIONS = [
   ('notes', '/notes.html'),
   ('pages', '/pages.html'),
   ('documents', '/documents.html'),]
-# Links to display in the footer:
-LINKS = [
-  ('bsd', 'http://www.opensource.org/licenses/BSD-3-Clause'),
-  ('xhtml', 'http://validator.w3.org/check/referer'),
-  ('css3', 'http://jigsaw.w3.org/css-validator/check/referer?profile=css'),
-  ('pelican', 'https://github.com/getpelican'),]
 # Set some default category:
 DEFAULT_CATEGORY = 'uncategorized'
 # A list of files to copy from the source to the destination
