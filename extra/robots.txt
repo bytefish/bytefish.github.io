@@ -1,4 +1,0 @@
-Sitemap: https://bytefish.de/sitemap.xml
-
-User-agent: *
-Disallow:
