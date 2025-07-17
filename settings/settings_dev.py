@@ -99,7 +99,7 @@ EXTRA_PATH_METADATA = {
 }
 # Folders to copy to <output>/static/...:
 STATIC_SAVE_AS = 'static/{path}'
-STATIC_PATHS = ['images', 'apps', 'extra/.htaccess', 'extra/robots.txt', 'extra/favicon.ico']
+STATIC_PATHS = ['images', 'pdf', 'apps', 'extra/.htaccess', 'extra/robots.txt', 'extra/favicon.ico']
 # Github Base Path:
 GITHUB_ISSUE_PATH='https://github.com/bytefish/bytefish.de/issues'
 GITHUB_SOURCE_PATH='https://github.com/bytefish/bytefish.de/blob/master/blog'
