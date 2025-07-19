@@ -8,6 +8,22 @@ summary: Notes, Ideas and Links
 
 [TOC]
 
+## 2025-07-19: On "NIH Is Far Cheaper Than The Wrong Dependency" ##
+
+An article titled "NIH Is Far Cheaper Than The Wrong Dependency" has recently been postes to programming communities:
+
+- [https://lewiscampbell.tech/blog/250718.html](https://lewiscampbell.tech/blog/250718.html)
+
+Here is what I think about taking on dependencies in Software development:
+
+> Just like everything in Software development: It depends. It’s never a good idea to speak in absolutes. Is it feasible to develop your own ORM? Probably not. Is it wise to bet your project on an ORM you cannot fix yourself? Probably? Probably not. It all depends on the context.
+>
+> I was bitten by taking on dependencies, that I cannot maintain myself, way too often. The most important thing instead is to not follow requirements blindly. Instead I try to talk customers out of very complex problems, I’d need to take on a library dependency for, and discuss trade-offs for alternative solutions.
+>
+> It’s your responsibility as a developer to make the risk of including a 100,000 line of code dependency transparent. Do not take on dependencies that depend mental well-being of a few open source developers.
+>
+> I say this as an open-source developer myself, who just “rage-quit” GitHub in a phase of extreme full-time work stress and took dozens of repositories private.
+
 ## 2025-07-16: Taking the Repositories to Private ##
 
 I have put most of my repositories into private mode. Why? Because I don’t want to feed LLM training sets anymore and see my tutorials and code copies verbatim without proper attribution.
