@@ -14,7 +14,7 @@ An article titled "NIH Is Far Cheaper Than The Wrong Dependency" has recently be
 
 - [https://lewiscampbell.tech/blog/250718.html](https://lewiscampbell.tech/blog/250718.html)
 
-It's a very well written article and I agree with a lot of points raised in the article. It's framework for deciding to take on a dependency or not is very useful.
+It's a very well written article and I agree with a lot of points raised in the article. Its framework for deciding to take on a dependency is very useful.
 
 Here is what I think about taking on dependencies in Software development:
 
