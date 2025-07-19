@@ -40,7 +40,7 @@ So I have deleted my domains, and then canceled the contract with my host of 22 
 
 The lesson here: Never rely on the mental well-being of a single open source developer for anything, you are running in production. These developers could disappear from one moment to the next.
 
-While on vacation I re-registered my domain and moved it to GitHub Pages and am going to move to Cloudflare as a Domain Registrar, so the costs of this page are reduced.
+While on vacation I re-registered my domain and moved it to GitHub Pages and use Hetzner as a Domain Registrar (Cloudflare doesn't support the .de TLD). 
 
 ## 2025-06-29: Importing Routing Data for pgRouting on Windows ##
 
