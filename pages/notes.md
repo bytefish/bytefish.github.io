@@ -10,7 +10,7 @@ summary: Notes, Ideas and Links
 
 ## 2025-07-19: On "NIH Is Far Cheaper Than The Wrong Dependency" ##
 
-An article titled "NIH Is Far Cheaper Than The Wrong Dependency" has recently been postes to programming communities:
+An article titled "NIH Is Far Cheaper Than The Wrong Dependency" has recently been posted to programming communities:
 
 - [https://lewiscampbell.tech/blog/250718.html](https://lewiscampbell.tech/blog/250718.html)
 
@@ -26,7 +26,7 @@ Here is what I think about taking on dependencies in Software development:
 
 ## 2025-07-16: Taking the Repositories to Private ##
 
-I have put most of my repositories into private mode. Why? Because I don’t want to feed LLM training sets anymore and see my tutorials and code copies verbatim without proper attribution.
+I have put most of my repositories into private mode. Why? Because I don’t want to feed LLM training sets anymore and see my tutorials and code copied verbatim without proper attribution.
 
 If you need access to any of the repositories, I am more than happy to share the code with you. But it’s going to take you at least a mail or an issue in this page issue tracker, to ask for it.
 
