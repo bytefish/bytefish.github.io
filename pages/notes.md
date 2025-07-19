@@ -14,6 +14,8 @@ An article titled "NIH Is Far Cheaper Than The Wrong Dependency" has recently be
 
 - [https://lewiscampbell.tech/blog/250718.html](https://lewiscampbell.tech/blog/250718.html)
 
+It's a very well written article and I agree with a lot of points raised in the article. It's framework for deciding to take on a dependency or not is very useful.
+
 Here is what I think about taking on dependencies in Software development:
 
 > Just like everything in Software development: It depends. It’s never a good idea to speak in absolutes. Is it feasible to develop your own ORM? Probably not. Is it wise to bet your project on an ORM you cannot fix yourself? Probably? Probably not. It all depends on the context.
