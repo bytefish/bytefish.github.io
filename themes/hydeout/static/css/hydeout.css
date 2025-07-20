@@ -752,3 +752,66 @@ dd.article-title {
     text-align: left;
   }
 }
+
+
+.pacman-hr {
+    border: none;
+    height: 10px;
+    background-image: radial-gradient(circle at center, #333 2px, transparent 3px); 
+    background-size: 10px 10px; 
+    background-repeat: repeat-x; 
+    position: relative;
+    overflow: hidden;
+    margin: 50px 0;
+}
+
+
+.pacman-hr::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 15%; /* Position of the ghosts, adjust as needed */
+    transform: translateY(-50%);
+    width: 80px; /* Total width for all ghosts */
+    height: 30px; /* Height of the ghosts */
+    /* Using multiple box-shadows to create multiple ghosts */
+    box-shadow:
+        -90px 0 0 0 red,      /* Blinky */
+        -60px 0 0 0 pink,     /* Pinky */
+        -30px 0 0 0 cyan;     /* Inky */
+    /* Basic ghost shape - you might want to refine this with clip-path or background-image */
+    background-color: orange; /* Placeholder for Clyde if you add him */
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    /* Adding "eyes" for a more ghost-like appearance (optional) */
+    background-image:
+        radial-gradient(circle at 30% 35%, white 40%, black 50%),
+        radial-gradient(circle at 70% 35%, white 40%, black 50%);
+    background-repeat: no-repeat;
+    background-size: 15px 15px, 15px 15px; /* Size of the eyes */
+    background-position: calc(50% - 15px) calc(50% - 5px), calc(50% + 5px) calc(50% - 5px); /* Position for eyes */
+}
+
+.pacman-hr::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 10%; /* Position of Pac-Man, adjust as needed */
+    transform: translateY(-50%);
+    width: 30px; /* Size of Pac-Man */
+    height: 30px; /* Size of Pac-Man */
+    background-color: yellow;
+    border-radius: 50%; /* Makes it round */
+    /* Creating the mouth using a clever radial gradient or clip-path */
+    background-image:
+        radial-gradient(circle at 50% 50%, transparent 50%, yellow 50%),
+        linear-gradient(to bottom right, transparent 50%, yellow 50%),
+        linear-gradient(to top right, transparent 50%, yellow 50%);
+    background-size: 100% 100%, 50% 50%, 50% 50%;
+    background-position: 0 0, 0 0, 0 0;
+    background-repeat: no-repeat;
+    /* Rotate to open the mouth towards the ghosts */
+    transform: translateY(-50%) rotate(45deg); /* Adjust rotation for mouth direction */
+}
