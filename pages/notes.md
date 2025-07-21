@@ -18,7 +18,7 @@ It dicusses, why "Bullshit" might be a more correct term, and it classifies Chat
 
 * [https://link.springer.com/article/10.1007/s10676-024-09775-5](https://link.springer.com/article/10.1007/s10676-024-09775-5)
 
-I had suchc a good laug reading it. And biased as I am, I will refer to it. 
+I had such a good laugh reading it. And biased as I am, I will refer to it. 
 
 ## 2025-07-19: On "NIH Is Far Cheaper Than The Wrong Dependency" ##
 
