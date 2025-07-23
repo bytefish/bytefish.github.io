@@ -32,6 +32,10 @@ Here is what I think:
 >
 > See, it always depends.
 
+Original Comment:
+
+* [https://news.ycombinator.com/item?id=44656133](https://news.ycombinator.com/item?id=44656133)
+
 ## 2025-07-21: Is ChatGPT a hard bullshitter? ##
 
 I am an "AI Sceptic" and when discussing Large Language Models with enthusiasts I usually call them "Bullshit Generators on Steroids". 
