@@ -8,6 +8,30 @@ summary: Notes, Ideas and Links
 
 [TOC]
 
+## 2025-07-23: Trunk-based Development ##
+
+If you develop Software these days, you are going to use some kind of version control, most likely it's git. 
+
+Your team needs a development workflow, and there are many schools of thought, such as Trunk-based Development:
+
+* [https://thinkinglabs.io/articles/2025/07/21/on-the-benefits-of-trunk-based-development.html](https://thinkinglabs.io/articles/2025/07/21/on-the-benefits-of-trunk-based-development.html)
+
+Here is what I think:
+
+> A decade in software development taught me: it always depends. It’s never a good idea to speak in absolutes.
+>
+> Your development workflow depends on your product, on your team, their skills, on your organization and so on.
+>
+> As with everything you need to carefully evaluate, if Trunk-based development is a good fit for your product, your team and your organizational structure. Sometimes it fits well, sometimes it’s not a good fit.
+>
+> I think a lot of people dismiss gitflow and its feature-branched model as too complicated. Yes, it feels so slow, right?
+>
+> But it gives inexperienced teams a very clear and documented workflow, especially so, if you need to support multiple versions of your product in the wild. It clearly dictates how to do bugfixes and hotfixes, that need to be done in multiple releases of your product.
+>
+> Could you achieve the same with Trunk-based development? Maybe? Could an inexperienced team come up with it on their own? I don’t think so.
+>
+> See, it always depends.
+
 ## 2025-07-21: Is ChatGPT a hard bullshitter? ##
 
 I am an "AI Sceptic" and when discussing Large Language Models with enthusiasts I usually call them "Bullshit Generators on Steroids". 
