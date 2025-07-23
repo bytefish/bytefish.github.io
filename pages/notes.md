@@ -1,5 +1,5 @@
 title: notes
-date: 2025-06-28 10:30
+date: 2025-07-23 10:30
 author: Philipp Wagner
 template: page
 summary: Notes, Ideas and Links
@@ -7,6 +7,16 @@ summary: Notes, Ideas and Links
 ## Table of contents ##
 
 [TOC]
+
+## 2025-07-23: Thoughts on OData ##
+
+There was a discussion about OData on Reddit and I thought I'd share my point of view about OData:
+
+> I *was* a very vocal supporter of OData. And in my experience a good way to provide filtering is to prepare SQL Views for the User Interface you have in mind and use OData to filter on it. And that’s all I would use OData for today.
+>
+> A word of caution: Don’t underestimate authorization. I ported the ODataAuthorization library to .NET 8, and tried to make an OData API work in production. But securing OData is way too hard in production, RBAC is not enough.
+>
+> OData APIs make it too easy to accidentally leak data through $expands and alike. These days I prefer a simple RESTful API, that makes it easier to protect the data.
 
 ## 2025-07-23: Trunk-based Development ##
 
