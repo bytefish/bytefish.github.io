@@ -8,6 +8,14 @@ summary: Notes, Ideas and Links
 
 [TOC]
 
+## 2025-08-23: Status Update ##
+
+A month had passed, since returning from Bulgaria. I have started some small projects, but all repositories are in private mode.
+
+I've lost interest in Apache Flink and PostGIS again, because it would take too much time to build realistic datasets and simulations. 
+
+So far... not much in the pipeline. 
+
 ## 2025-07-23: Thoughts on OData ##
 
 There was a discussion about OData on Reddit and I thought I'd share my point of view about OData:
