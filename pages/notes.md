@@ -8,6 +8,16 @@ summary: Notes, Ideas and Links
 
 [TOC]
 
+## 2025-09-13: Updating Maven Central Releases ##
+
+We had been to China last year and releasing a library to the Maven Central was... quite an adventure. 
+
+So I am bow beginning to add GitHub Actions to my repositories, here is the PgBulkInsert one:
+
+* [https://github.com/PgBulkInsert/PgBulkInsert/blob/18128aecc2eeb79ede6ed7b7cd6e00eae59d54d6/.github/workflows/publish-packages.yml](https://github.com/PgBulkInsert/PgBulkInsert/blob/18128aecc2eeb79ede6ed7b7cd6e00eae59d54d6/.github/workflows/publish-packages.yml)
+
+It took more than 30 attempts to get it right. 🫣
+
 ## 2025-08-23: Status Update ##
 
 A month had passed, since returning from Bulgaria. I have started some small projects, but all repositories are in private mode.
