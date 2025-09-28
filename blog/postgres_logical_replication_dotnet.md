@@ -29,7 +29,7 @@ The Npgsql documentation writes ...
 
 All code can be found in a Git Repository at:
 
-* [https://github.com/bytefish/gitclub-dotnet](https://github.com/bytefish/gitclub-dotnet)
+* [https://github.com/bytefish/npgsql-examples](https://github.com/bytefish/npgsql-examples)
 
 ## Table of contents ##
 
