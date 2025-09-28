@@ -10,7 +10,7 @@ summary: About this page.
 
 ## Contact Details ##
 
-* Email: pwag86 *AT* gmail *DOT* com
+* Email: philipp *AT* bytefish *DOT* de
 * Address: Check the WHOIS record.
 
 ## Links ##
