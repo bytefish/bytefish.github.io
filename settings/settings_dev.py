@@ -80,7 +80,6 @@ SIDEBAR_DESCRIPTION = 'Sharing Code &amp; Ideas'
 SECTIONS = [
   ('blog', '/blog.html'),
   ('about', '/about.html'),
-  ('notes', '/notes.html'),
   ('pages', '/pages.html'),
   ('documents', '/documents.html'),]
 # Set some default category:
