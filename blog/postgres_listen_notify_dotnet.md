@@ -416,8 +416,10 @@ extend and maintain.
 There are obviously some things missing here and I have no answer for, like ...
 
 What's going to happen, if we cannot process incoming notifications and experience backpressure? Should we wait or 
-drop notifications? Throw an Exception? What happens, if we lose the Connection to the Postgres Server, thus being 
-unsubscribed from Notifications? Should we throw an exception? Log it and reconnect? Does Npgsql automatically 
-reconnect?
+drop notifications? Throw an Exception? 
+
+What happens, if we lose the Connection to the Postgres Server, thus being 
+unsubscribed from Notifications? Should we throw an exception? Log it and reconnect? This could be achieved 
+using [Keepalive](https://www.npgsql.org/doc/keepalive.html) which invokes a [StateChange](https://learn.microsoft.com/en-us/dotnet/api/system.data.common.dbconnection.statechange) event.
 
 I would be interested to hear your thoughts on it!
