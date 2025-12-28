@@ -1,4 +1,4 @@
-title: Creating State Machines Diagrams
+title: Creating State Machine Diagrams
 date: 2025-12-28 12:21
 tags: angular, apps
 category: apps
