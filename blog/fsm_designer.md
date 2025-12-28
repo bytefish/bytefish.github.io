@@ -7,8 +7,8 @@ author: Philipp Wagner
 summary: Introduces a tool for designing State Machines.
 
 In this article I am going to introduce fsm-designer, which is a small Angular application 
-for creating State Machine Diagrams. It also serves as a quick introduction for modeling 
-systems as State Machines.
+for creating State Machine Diagrams. The article also serves as a quick introduction to 
+modeling systems as State Machines.
 
 All code can be found in a Git repository at:
 
