@@ -6,6 +6,17 @@
   box-sizing: border-box;
 }
 
+html {
+  /* Fluid base font size: scales between 16px and 18px */
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+  line-height: 1.6; /* Improved vertical rhythm */
+}
+
+h1 { font-size: clamp(2rem, 1.5rem + 2.5vw, 3rem); }
+h2 { font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem); }
+h3 { font-size: clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem); }
+
 html,
 body {
   margin: 0;
@@ -465,6 +476,7 @@ body {
   .index #sidebar {
     margin-bottom: 0;
   }
+  
   .container {
     background: #fff;
     color: #000;
@@ -488,10 +500,23 @@ body {
     margin-bottom: 0.5rem;
   }
   .container > * {
-    max-width: 38rem;
-    padding: 0;
+    max-width: 48rem; 
+    margin-left: 0;
+    margin-right: auto;
   }
+  .container {
+    padding: 4rem 6rem 0;
+  }
+
+  .post-body {
+    max-width: 75ch; 
+  }  
 }
+
+@media (min-width: 49rem) {
+
+}
+
 /* -----------------------------------------------------------
   Sidebar links + nav
 ----------------------------------------------------------- */
