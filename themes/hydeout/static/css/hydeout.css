@@ -236,108 +236,46 @@ a svg,
 .icon {
   vertical-align: middle;
 }
-/* The main container */
-.highlight {
-  position: relative;
-  background-color: #f8f9fa;
-  border: 1px solid #dadce0;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  padding-top: 38px !important; /* Space for the CSS-generated header */
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+
+code,
+pre {
+  font-family: Consolas, "Liberation Mono", Menlo, monospace;
 }
 
-.highlight::before {
-  content: "CODE";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 38px;
-  background-color: #f1f3f4;
-  border-bottom: 1px solid #dadce0;
-  z-index: 1;
-  /* Label Styling */
-  display: flex;
-  align-items: center;
-  padding-left: 16px;
-  color: #5f6368;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+code {
+  background-color: #f9f9f9;
+  border-radius: 3px;
+  color: #bf616a;
+  font-size: 85%;
+  padding: 0.25em 0.5em;
+  word-break: break-word;
 }
 
-/* The Copy Button */
-.copy-btn {
-  position: absolute;
-  top: 4px;
-  right: 8px;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: transparent;
-  border: none !important;
-  border-radius: 4px !important;
-  color: #5f6368 !important;
-  font-size: 12px !important;
-  font-weight: 500;
-  padding: 6px 10px !important;
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-.copy-btn:hover {
-  background-color: #e8eaed !important;
-  color: #202124 !important;
-  box-shadow: none !important;
-}
-
-.copy-btn svg {
-  fill: currentColor;
-  width: 16px;
-  height: 16px;
-}
-
-/* Styling the actual code area to emulate Google Style */
-.highlight pre {
-  margin: 0 !important;
-  padding: 16px !important;
+pre {
+  margin-bottom: 1rem;
+  margin-top: 0;
+  max-width: 100%;
   overflow-x: auto;
-  background: transparent !important;
-  font-family: "Roboto Mono", "Source Code Pro", Consolas, "Courier New", monospace !important;
-  font-size: 13.5px !important;
-  line-height: 1.6 !important;
-  color: #3c4043;
 }
 
-.highlight code {
-  background-color: transparent !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
-  color: inherit !important;
-  font-family: inherit !important;
-  font-size: inherit !important;
-  word-break: normal !important;
-  white-space: pre !important;
+pre code {
+  background-color: transparent;
+  color: inherit;
+  font-size: 12px;
+  padding: 0;
 }
 
-/* Scrollbar styling */
-.highlight pre::-webkit-scrollbar {
-  height: 8px;
+.highlight {
+  background-color: #f9f9f9;
+  border-radius: 0.25rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  padding: 1rem;
 }
-.highlight pre::-webkit-scrollbar-track {
-  background: transparent;
-}
-.highlight pre::-webkit-scrollbar-thumb {
-  background: #dadce0;
-  border-radius: 10px;
-}
-.highlight pre::-webkit-scrollbar-thumb:hover {
-  background: #bdc1c6;
+.highlight pre {
+  margin-bottom: 0;
+  overflow-x: auto;
 }
 
 /*
