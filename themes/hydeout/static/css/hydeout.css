@@ -1,7 +1,3 @@
-/*
-  Most of these imports are derived from https://github.com/poole/poole.
-  Designed, built, and released under MIT license by @mdo.
-*/
 * {
   box-sizing: border-box;
 }
@@ -10,141 +6,71 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background-color: #fff;
+  background-color: #fdfdfd;
   width: 100%;
   height: 100%;
 }
 
 html {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 body {
    text-size-adjust: 100%;
    -webkit-text-size-adjust: 100%;
-}
-
-main,
-article,
-section {
-  display: block;
+   background-color: #202020;
+   color: rgba(255, 255, 255, 0.75);
+   display: flex;
+   flex-direction: column;
+   min-height: 100vh;
 }
 
 a {
   color: #268bd2;
-  text-decoration: underline;
-  word-break: break-word;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
 }
-a:hover, a:focus {
-  text-decoration: underline;
-}
-a strong {
-  color: inherit;
+a:hover {
+  border-bottom-color: #268bd2;
 }
 
-img {
-  border-radius: 5px;
-  display: block;
-  height: auto;
-  margin: 0 0 1rem;
-  max-width: 100%;
+/* Layout Containers */
+.container {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  background: #fff;
+  color: #333;
 }
 
-.table {
-    overflow-x: auto;
-    white-space: nowrap;
+#sidebar {
+  flex: 0 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: #202020;
 }
 
-table {
-  border: 1px solid #e5e5e5;
-  border-collapse: collapse;
-  font-size: 85%;
-  margin-bottom: 1rem;
+.content {
+  padding: 3rem 1.5rem;
   width: 100%;
 }
 
-td,
-th {
-  border: 1px solid #e5e5e5;
-  padding: 0.25rem 0.5rem;
-}
-
-th {
-  text-align: left;
-}
-
-tbody tr:nth-child(odd) td,
-tbody tr:nth-child(odd) th {
-  background-color: #f9f9f9;
-}
-
-button,
-input[type=text],
-input[type=email],
-input[type=search],
-input[type=submit] {
-  border: 1px solid #e5e5e5;
-  border-radius: 300px;
-  padding: 1em 1.5em;
-}
-
-button,
-input[type=submit] {
-  background: transparent;
-  border-color: #e5e5e5;
-  color: #268bd2;
-  cursor: pointer;
-  transition: color 0.6s ease-in-out, border-color 0.6s ease-in-out, background 0.6s ease-in-out;
-}
-button:hover,
-input[type=submit]:hover {
-  background: #268bd2;
-  border-color: #268bd2;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.16);
-  color: #fff;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.site-title {
-  color: #313131;
-  font-weight: 600;
-  line-height: 1.25;
-  margin-bottom: 0.5rem;
-  text-rendering: optimizeLegibility;
-}
-
-h1 {
-  font-size: 2rem;
-}
-
-h2 {
-  font-size: 1.5rem;
-  margin-top: 1rem;
-}
-
-h3 {
-  font-size: 1.25rem;
-  margin-top: 1.5rem;
-}
-
-h4,
-h5,
-h6 {
-  font-size: 1rem;
-  margin-top: 1rem;
-}
-
-p {
+/* Typography */
+h1, h2, h3, h4 {
+  color: #111;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-top: 2rem;
   margin-bottom: 1rem;
-  margin-top: 0;
 }
+
+h1 { font-size: 2.25rem; margin-top: 0; }
+h2 { font-size: 1.75rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+
+p { margin-bottom: 1.5rem; }
 
 strong {
   color: #303030;
@@ -157,11 +83,6 @@ dl {
   margin-top: 0;
 }
 
-li ul,
-li ol {
-  margin: 0 0 0 1.5em;
-}
-
 dt {
   font-weight: bold;
 }
@@ -170,627 +91,7 @@ dd {
   margin-bottom: 0.5rem;
 }
 
-hr {
-  border: 0;
-  height: 10px;
-  background-image: radial-gradient(circle at center, #333 2px, transparent 3px);
-  background-size: 10px 10px;
-  background-repeat: repeat-x;
-  margin: 1.5rem 0;
-  position: relative;
-}
-
-abbr {
-  color: #555;
-  font-size: 85%;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-abbr[title] {
-  border-bottom: 1px dotted #e5e5e5;
-  cursor: help;
-}
-
-blockquote {
-  border-left: 0.25rem solid #e5e5e5;
-  color: #7a7a7a;
-  margin: 0.8rem 0;
-  padding: 0.5rem 1rem;
-}
-blockquote p:last-child {
-  margin-bottom: 0;
-}
-@media (min-width: 30em) {
-  blockquote {
-    padding-left: 1.25rem;
-    padding-right: 5rem;
-  }
-}
-
-a[href^="#fn:"],
-a[href^="#fnref:"] {
-  display: inline-block;
-  font-weight: bold;
-  margin-left: 0.1rem;
-}
-
-.footnotes {
-  font-size: 85%;
-  margin-top: 2rem;
-}
-
-.lead {
-  font-size: 1.25rem;
-  font-weight: 300;
-}
-
-a svg {
-  fill: #268bd2;
-}
-
-a svg,
-.icon svg {
-  height: 1em;
-}
-
-.icon {
-  vertical-align: middle;
-}
-
-code, pre {
-  font-family: "Roboto Mono", Consolas, Menlo, monospace;
-}
-
-code {
-  background-color: #f1f3f4;
-  color: #3c4043;
-  padding: 2px 4px;
-  border-radius: 4px;
-  font-size: 90%;
-}
-
-pre {
-  position: relative;
-  background-color: #f8f9fa;
-  border: 1px solid #dadce0;
-  border-radius: 8px;
-  margin: 1.5rem 0;
-  padding: 40px 16px 16px;
-  overflow-x: auto;
-  line-height: 1.5;
-  font-family: "Roboto Mono", Consolas, Menlo, monospace;
-}
-
-pre code {
-  background: transparent;
-  padding: 0;
-  color: #202124;
-  font-size: 13px;
-  border: none;
-}
-
-.copy-code-button {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: #ffffff;
-  border: 1px solid #dadce0;
-  color: #1a73e8;
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s;
-}
-
-.copy-code-button:hover {
-  background-color: #f1f3f4;
-  box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3);
-}
-
-@media (max-width: 48.9rem) {
-  pre {
-    border-radius: 12px;
-    padding-top: 48px;
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .copy-code-button {
-    top: 10px;
-    right: 10px;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 11px;
-    background: #f8f9fa;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-  }
-}
-
-@media (min-width: 64rem) {
-  .container > pre {
-    width: calc(100vw - 18rem - 10rem);
-    max-width: 60rem;
-    margin-left: 0;
-  }
-}
-
-/*
-  Layout
-
-  Styles for managing the structural hierarchy of the site.
-  Hydeout features the large colored sidebar from Hyde that houses the
-  site name, intro, and "footer" content. Sidebar is on top of content on
-  mobile and expands into sidebar on larger width displays.
-
-  Sidebar CSS assumes HTML looks like this for post pages:
-
-    body
-    > #sidebar
-      > header (primary sidebar content -- i.e. title)
-        > h1 (home page only, otherwise div or span)
-      > secondary nav content we may want to hide on certain pages
-    > .container
-      > h1 (non-home page)
-      > .content
-
-  Basic approach is to color in body, make sidebar background transparent,
-  and then fill in the .container or .content elements depending on how far
-  we want the sidebar or header to stretch.
-*/
-body {
-  background-color: #202020;
-  color: rgba(255, 255, 255, 0.75);
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-#sidebar {
-  flex: 0 0 auto;
-  padding: 1rem;
-  text-align: center;
-}
-#sidebar .site-title {
-  font-size: 2.5rem;
-  font-weight: 300;
-  margin-bottom: 0.5rem;
-  margin-top: 0;
-}
-
-.content {
-  background: #fff;
-  color: #000;
-  padding: 2rem;
-}
-
-.container {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  background: #fff;
-  color: #000;
-}
-.container > header {
-  color: #313131;
-  margin: 0;
-}
-.container > header h1,
-.container > header h2 {
-  color: inherit;
-}
-.container > header h1:last-child,
-.container > header h2:last-child {
-  margin-bottom: 0.5rem;
-}
-
-.container > .content {
-  flex-grow: 1;
-  padding-bottom: 4rem;
-}
-
-/* -----------------------------------------------------------
-  Tablet / Desktop view
------------------------------------------------------------ */
-@media (min-width: 49rem) {
-  body {
-    flex-direction: row;
-    min-height: 100vh;
-  }
-
-  /* --- Sidebar Logic --- */
-  #sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 18rem;
-    height: 100vh;
-    padding: 2rem;
-    text-align: left;
-  }
-  
-  #sidebar > *:last-child { margin-bottom: 0; }
-  
-  #sidebar .site-title {
-    font-size: 2.5rem;
-    text-align: left;
-    font-weight: 300;
-  }
-
-  #sidebar p.lead { text-align: left; }
-
-  /* Keeps your nav and lead text visible on desktop */
-  #sidebar p.lead,
-  #sidebar header ~ * {
-    display: block;
-  }
-  #sidebar header ~ nav {
-    display: flex;
-  }
-  
-  .index #sidebar { margin-bottom: 0; }
-
-  /* --- Container & Content Logic --- */
-  .container {
-    background: #fff;
-    color: #000;
-    min-height: 100vh;
-    padding: 4rem 4rem 0;
-    margin-left: 18rem;
-    flex: 1 1 auto;
-  }
-
-  .container > header {
-    color: #313131;
-    margin: 0;
-  }
-
-  .container > header h1,
-  .container > header h2 { color: inherit; }
-
-  .container > header h1:last-child,
-  .container > header h2:last-child {
-    margin-bottom: 0.5rem;
-  }
-
-  /* Your original 38rem limit for prose */
-  .container > * {
-    max-width: 38rem;
-    padding: 0;
-    width: 100%;
-  }
-
-  /* NEW: Allow code blocks to use the full width of this 49rem view */
-  .container > pre {
-    max-width: 100%;
-  }
-}
-
-/* --- 1920px Specific Expansion --- */
-@media (min-width: 100rem) {
-  #sidebar {
-    width: 22rem;
-    padding: 3rem;
-  }
-
-  .container {
-    margin-left: 22rem;
-    padding-left: 6rem;
-    padding-right: 6rem;
-  }
-
-  /* Make text blocks slightly wider for high-res screens */
-  .container > * {
-    max-width: 46rem;
-  }
-
-  /* Give code the massive breathing room you wanted */
-  .container > pre {
-    width: calc(100vw - 22rem - 12rem);
-    max-width: 75rem;
-  }
-}
-
-/* -----------------------------------------------------------
-  Sidebar links + nav
------------------------------------------------------------ */
-#sidebar a {
-  color: #fff;
-}
-#sidebar a svg {
-  fill: rgba(255, 255, 255, 0.85);
-}
-
-#sidebar a:hover svg,
-#sidebar a:focus svg,
-#sidebar a.active svg {
-  fill: rgba(255, 255, 255, 0.85);
-}
-
-#sidebar a:hover,
-#sidebar a:focus {
-  text-decoration: underline;
-}
-#sidebar a:hover.icon,
-#sidebar a:focus.icon {
-  text-decoration: none;
-}
-
-#sidebar a.active {
-  font-weight: bold;
-}
-
-#sidebar .site-title {
-  color: #fff;
-}
-#sidebar .site-title a {
-  color: inherit;
-}
-
-#sidebar nav {
-  display: flex;
-}
-
-#sidebar-nav-links {
-  flex-flow: column nowrap;
-}
-
-#sidebar-icon-links {
-  flex-flow: row wrap;
-  justify-content: center;
-  margin-top: 1rem;
-  max-width: 100%;
-}
-@media (min-width: 49rem) {
-  #sidebar-icon-links {
-    justify-content: flex-start;
-    margin-left: -0.25em;
-  }
-}
-
-#sidebar-pageview-links {
-  flex-flow: row wrap;
-  justify-content: center;
-  margin-top: 1rem;
-  max-width: 100%;
-}
-@media (min-width: 49rem) {
-  #sidebar-pageview-links {
-    justify-content: flex-start;
-    margin-left: -0.25em;
-  }
-}
-
-#sidebar nav > * {
-  display: block;
-  line-height: 1.75;
-}
-
-#sidebar nav > .icon {
-  display: inline-block;
-  font-size: 1.5rem;
-  margin: 0 0.25em;
-}
-
-.page-link {
-  text-align: center;
-}
-
-
-@media (min-width: 49rem) {
-  .page-link {
-    text-align: left;
-  }
-}
-
-@media print {
-  #sidebar {
-    display: none;
-  }
-  body {
-    display: block;
-  }
-  .container {
-    display: block;
-    margin-left: 0;
-    margin-right: 0;
-    padding: 0;
-  }
-  .container > * {
-    max-width: 100%;
-  }
-  html {
-    font-size: normal;
-  }
-}
-.masthead {
-  margin-bottom: 3rem;
-  padding-bottom: 1rem;
-  padding-top: 1rem;
-}
-
-.masthead-title {
-  color: #000;
-  margin-bottom: 0;
-  margin-top: 0;
-}
-.masthead-title a {
-  color: inherit;
-}
-.masthead-title small {
-  font-size: 75%;
-  font-weight: 400;
-  opacity: 0.5;
-}
-
-.posts-by-tag h2 {
-  text-transform: capitalize;
-}
-
-.page-title,
-.post-title {
-    text-align: center;
-    margin-top: 0;
-    margin-bottom:1rem;
-}
-
-.page-title,
-.post-title,
-.post-title a {
-  color: #313131;
-}
-
-h2.post-title,
-h2.page-title {
-  font-size: 2rem;
-}
-
-.post-tags a {
-  font-size: 0.8em;
-  margin-right: 0.5rem;
-  opacity: 0.75;
-  white-space: nowrap;
-}
-.post-tags a .tag-name {
-  text-transform: capitalize;
-}
-.post-tags a:hover {
-  opacity: 1;
-  text-decoration: none;
-}
-
-.posts-list {
-  list-style: none;
-  padding-left: 0;
-}
-.posts-list h3 {
-  margin-top: 0;
-}
-.posts-list li small {
-  color: #999;
-  font-size: 75%;
-  white-space: nowrap;
-}
-.posts-list li a:hover {
-  color: #268bd2;
-  text-decoration: none;
-}
-.posts-list li a:hover small {
-  color: inherit;
-}
-
-article + *,
-.post-body ~ section {
-  border-top: 1px solid #e5e5e5;
-  margin-top: 2rem;
-  padding-top: 2rem;
-}
-article + * > h2:first-child,
-article + * > h3:first-child,
-.post-body ~ section > h2:first-child,
-.post-body ~ section > h3:first-child {
-  margin-top: 0;
-}
-
-.post-meta {
-  color: #767676;
-  margin-bottom: 1rem;
-  margin-top: -0.5rem;
-}
-
-.post .content li + li,
-.page .content li + li {
-  margin-top: 0.25rem;
-}
-
-@media (min-width: 49rem) {
-  .pagination > a {
-    box-shadow: none;
-  }
-  .pagination > a:hover {
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.16);
-  }
-  .content .pagination:first-child {
-    margin-top: 0;
-  }
-  .content .pagination:first-child + * {
-    border-top: 1px solid #e5e5e5;
-    margin-top: 2rem;
-    padding-top: 2rem;
-  }
-}
-
-.message {
-  background-color: #f9f9f9;
-  color: #717171;
-  margin-bottom: 1rem;
-  padding: 1rem;
-}
-
-.search-row {
-  border: 1px solid #e5e5e5;
-  border-radius: 300px;
-  display: flex;
-  padding: 2px;
-}
-.search-row input {
-  border: 0;
-}
-.search-row input + input {
-  margin-left: 2px;
-}
-.search-row input[type=text],
-.search-row input[type=search] {
-  flex-grow: 1;
-}
-
-.tags-list a {
-  margin-right: 0.5em;
-  opacity: 0.75;
-  white-space: nowrap;
-}
-
-.tags-list a .tag-count {
-  background: #268bd2;
-  border-radius: 1000px;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.75em;
-  margin-left: 0.25em;
-  padding-left: 0.6em;
-  padding-right: 0.6em;
-}
-
-.tags-list a:hover {
-  opacity: 1;
-  text-decoration: none;
-}
-
-@keyframes posts-for-tag-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-.posts-for-tag {
-  display: none;
-}
-.posts-for-tag:target {
-  animation: posts-for-tag-fade-in 0.6s ease-in-out;
-  display: block;
-}
-
-/* Archive */
-h2.article-year {
-    text-align: center;
-}
-
-dl {
-  margin-bottom: 1em;
-}
-
+/* Archive specific styles for dd/dt */
 dt.article-date {
   font-weight: bold;
   text-align: center;
@@ -802,12 +103,153 @@ dd.article-title {
   text-align: center;
 }
 
+/* --- IMPROVED TABLE STYLES --- */
+table {
+  width: 100%;
+  margin-bottom: 2rem;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
 
+thead th {
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  color: #111;
+  text-align: left;
+  font-weight: 600;
+}
+
+tbody td, tbody th {
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+
+tbody tr:hover {
+  background-color: #fcfcfc;
+}
+
+/* --- IMPROVED IMAGE STYLES --- */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 2rem auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* --- GOOGLE STYLE CODE BLOCKS (Dynamic) --- */
+.code-figure {
+  margin: 2rem 0;
+  border: 1px solid #e1e4e8;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #f6f8fa;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: #f1f3f4;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+.code-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #5f6368;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+pre {
+  margin: 0;
+  padding: 1.25rem;
+  overflow-x: auto;
+  background-color: transparent;
+}
+
+code, pre {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+pre code {
+  background-color: transparent;
+  color: #24292e;
+  font-size: 14px;
+  padding: 0;
+  line-height: 1.5;
+  display: block;
+}
+
+/* Copy Button */
+.copy-code-button {
+    padding: 0.4rem 0.8rem !important;
+    font-size: 10px !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: #fff !important;
+    border: 1px solid #dadce0 !important;
+    color: #1a73e8 !important;
+    border-radius: 4px !important;
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1 !important;
+}
+
+.copy-code-button:hover {
+    background: #f8f9fa !important;
+    box-shadow: 0 1px 2px rgba(60,64,67,0.3);
+}
+
+/* Desktop Logic */
 @media (min-width: 49rem) {
-  h2.article-year {
-      text-align: left;
-  }
+  body { flex-direction: row; }
   
+  #sidebar {
+    width: 18rem;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .container {
+    margin-left: 18rem;
+    background: #fff;
+    border-left: 1px solid #eee; 
+  }
+
+  .content {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 5rem 3rem;
+  }
+
+  /* Target both standard elements and our new generated figures */
+  .content > *:not(.code-figure) {
+    max-width: 40rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .content > .code-figure {
+    max-width: 58rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .post-title, .site-title {
+    text-align: left;
+  }
+
+  /* Desktop overrides for Archive styles */
   dt.article-date {
     text-align: left;
   }
@@ -816,3 +258,9 @@ dd.article-title {
     text-align: left;
   }
 }
+
+.site-title { color: #fff; font-weight: 300; margin: 0; }
+.site-title a { color: inherit; border: none; }
+.lead { font-size: 1.1rem; opacity: 0.7; margin-top: 0.5rem; }
+.page-link { display: block; color: #fff; margin-top: 1rem; border: none; opacity: 0.8; }
+.page-link:hover { opacity: 1; text-decoration: underline; }
