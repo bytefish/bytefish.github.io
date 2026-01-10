@@ -39,40 +39,6 @@
        {% block content %}
        {% endblock %}
     </main>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          const codeBlocks = document.querySelectorAll('.highlight');
-
-          codeBlocks.forEach(function(block) {
-            // Create the Copy Button
-            const copyBtn = document.createElement('button');
-            copyBtn.className = 'copy-btn';
-            copyBtn.innerHTML = `
-              <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-              <span>Copy</span>
-            `;
-
-            copyBtn.addEventListener('click', function() {
-              const code = block.querySelector('code') || block.querySelector('pre');
-              const text = code.innerText;
-
-              navigator.clipboard.writeText(text).then(() => {
-                const label = copyBtn.querySelector('span');
-                const originalText = label.innerText;
-                label.innerText = 'Copied!';
-                copyBtn.style.color = '#1a73e8';
-                setTimeout(() => {
-                  label.innerText = originalText;
-                  copyBtn.style.color = '';
-                }, 2000);
-              });
-            });
-
-            block.appendChild(copyBtn);
-          });
-        });
-    </script>
 
   </body>
 </html>
