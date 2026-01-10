@@ -242,7 +242,7 @@ code, pre {
 }
 
 code {
-  background-color: #f1f3f4; /* Google's light gray */
+  background-color: #f1f3f4;
   color: #3c4043;
   padding: 2px 4px;
   border-radius: 4px;
@@ -251,13 +251,14 @@ code {
 
 pre {
   position: relative;
-  background-color: #f8f9fa; /* Slightly lighter background */
-  border: 1px solid #dadce0; /* Subtle border */
-  border-radius: 8px;        /* Rounded edges */
+  background-color: #f8f9fa;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
   margin: 1.5rem 0;
-  padding: 40px 16px 16px;   /* Extra top padding for button */
+  padding: 40px 16px 16px;
   overflow-x: auto;
   line-height: 1.5;
+  font-family: "Roboto Mono", Consolas, Menlo, monospace;
 }
 
 pre code {
@@ -274,7 +275,7 @@ pre code {
   right: 8px;
   background: #ffffff;
   border: 1px solid #dadce0;
-  color: #1a73e8;            /* Google blue */
+  color: #1a73e8;
   padding: 4px 12px;
   border-radius: 4px;
   font-size: 12px;
@@ -288,8 +289,31 @@ pre code {
   box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3);
 }
 
-.copy-code-button:active {
-  background-color: #e8f0fe;
+@media (max-width: 48.9rem) {
+  pre {
+    border-radius: 12px;
+    padding-top: 48px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .copy-code-button {
+    top: 10px;
+    right: 10px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 11px;
+    background: #f8f9fa;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+}
+
+@media (min-width: 64rem) {
+  .container > pre {
+    width: calc(100vw - 18rem - 10rem);
+    max-width: 60rem;
+    margin-left: 0;
+  }
 }
 
 /*
@@ -373,28 +397,20 @@ body {
   body {
     flex-direction: row;
     min-height: 100vh;
-    -webkit-overflow-scrolling: touch;
-    overflow-y: auto;
   }
-  body > * {
-    -webkit-overflow-scrolling: touch;
-    overflow-y: auto;
-  }
-  /* Undo mobile CSS */
-  #sidebar {
-    text-align: left;
-    width: 18rem;
-    padding: 2rem;
-  }
-  #sidebar > *:last-child {
-    margin-bottom: 0;
-  }
-  
+
+  /* --- Sidebar Logic --- */
   #sidebar {
     position: fixed;
     top: 0;
     left: 0;
+    width: 18rem;
+    height: 100vh;
+    padding: 2rem;
+    text-align: left;
   }
+  
+  #sidebar > *:last-child { margin-bottom: 0; }
   
   #sidebar .site-title {
     font-size: 2.5rem;
@@ -402,10 +418,9 @@ body {
     font-weight: 300;
   }
 
-  #sidebar p.lead {
-      text-align: left;
-  }
+  #sidebar p.lead { text-align: left; }
 
+  /* Keeps your nav and lead text visible on desktop */
   #sidebar p.lead,
   #sidebar header ~ * {
     display: block;
@@ -414,66 +429,66 @@ body {
     display: flex;
   }
   
-  .index #sidebar {
-    margin-bottom: 0;
-  }
+  .index #sidebar { margin-bottom: 0; }
+
+  /* --- Container & Content Logic --- */
   .container {
     background: #fff;
     color: #000;
     min-height: 100vh;
     padding: 4rem 4rem 0;
     margin-left: 18rem;
+    flex: 1 1 auto;
   }
-  
+
   .container > header {
     color: #313131;
     margin: 0;
   }
-  
+
   .container > header h1,
-  .container > header h2 {
-    color: inherit;
-  }
-  
+  .container > header h2 { color: inherit; }
+
   .container > header h1:last-child,
   .container > header h2:last-child {
     margin-bottom: 0.5rem;
   }
-  
-  .container > * {
-    max-width: 38rem;
-    padding: 0;
-  }
-  .container > * {
-    max-width: 38rem;
-    padding: 0;
-  }
-}
 
-@media (min-width: 64rem) {
+  /* Your original 38rem limit for prose */
+  .container > * {
+    max-width: 38rem;
+    padding: 0;
+    width: 100%;
+  }
+
+  /* NEW: Allow code blocks to use the full width of this 49rem view */
   .container > pre {
-    max-width: 56rem;
-    width: 100%;
-    margin-left: 0; 
+    max-width: 100%;
   }
 }
 
-@media (max-width: 48rem) {
-  pre {
-    padding-top: 50px; 
-    font-size: 12px;   
-    margin-left: -1rem; 
-    margin-right: -1rem;
-    border-radius: 0;
+/* --- 1920px Specific Expansion --- */
+@media (min-width: 100rem) {
+  #sidebar {
+    width: 22rem;
+    padding: 3rem;
   }
-  
-  .copy-code-button {
-    width: 100%;
-    text-align: center;
-    top: 0;
-    right: 0;
-    border-radius: 8px 8px 0 0;
-    border-bottom: 1px solid #dadce0;
+
+  .container {
+    margin-left: 22rem;
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+
+  /* Make text blocks slightly wider for high-res screens */
+  .container > * {
+    max-width: 46rem;
+  }
+
+  /* Give code the massive breathing room you wanted */
+  .container > pre {
+    width: calc(100vw - 22rem - 12rem);
+    max-width: 75rem;
   }
 }
 
