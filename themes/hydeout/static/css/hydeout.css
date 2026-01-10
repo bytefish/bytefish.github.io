@@ -6,17 +6,6 @@
   box-sizing: border-box;
 }
 
-html {
-  /* Fluid base font size: scales between 16px and 18px */
-  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
-  line-height: 1.6; /* Improved vertical rhythm */
-}
-
-h1 { font-size: clamp(2rem, 1.5rem + 2.5vw, 3rem); }
-h2 { font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem); }
-h3 { font-size: clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem); }
-
 html,
 body {
   margin: 0;
@@ -477,12 +466,20 @@ body {
     margin-bottom: 0;
   }
   
-  .container {
+.container {
     background: #fff;
     color: #000;
     min-height: 100vh;
-    padding: 4rem 4rem 0;
+    padding: 4rem 2rem 0; 
     margin-left: 18rem;
+    width: calc(100% - 18rem);
+    max-width: none;
+  }
+
+  .container > * {
+    max-width: 100%; 
+    margin-left: 0;
+    margin-right: auto;
   }
   
   .container > header {
@@ -499,18 +496,11 @@ body {
   .container > header h2:last-child {
     margin-bottom: 0.5rem;
   }
-  .container > * {
-    max-width: 48rem; 
-    margin-left: 0;
-    margin-right: auto;
-  }
+
   .container {
     padding: 4rem 6rem 0;
   }
 
-  .post-body {
-    max-width: 75ch; 
-  }  
 }
 
 @media (min-width: 49rem) {
