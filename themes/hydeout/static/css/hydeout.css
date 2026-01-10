@@ -249,9 +249,8 @@ a svg,
   flex-direction: column;
 }
 
-/* Create the Header Bar and "CODE" text without JavaScript */
 .highlight::before {
-  content: "CODE"; /* The header label */
+  content: "CODE";
   position: absolute;
   top: 0;
   left: 0;
@@ -340,6 +339,7 @@ a svg,
 .highlight pre::-webkit-scrollbar-thumb:hover {
   background: #bdc1c6;
 }
+
 /*
   Layout
 
@@ -465,21 +465,12 @@ body {
   .index #sidebar {
     margin-bottom: 0;
   }
-  
-.container {
+  .container {
     background: #fff;
     color: #000;
     min-height: 100vh;
-    padding: 4rem 2rem 0; 
+    padding: 4rem 4rem 0;
     margin-left: 18rem;
-    width: calc(100% - 18rem);
-    max-width: none;
-  }
-
-  .container > * {
-    max-width: 100%; 
-    margin-left: 0;
-    margin-right: auto;
   }
   
   .container > header {
@@ -496,17 +487,11 @@ body {
   .container > header h2:last-child {
     margin-bottom: 0.5rem;
   }
-
-  .container {
-    padding: 4rem 6rem 0;
+  .container > * {
+    max-width: 38rem;
+    padding: 0;
   }
-
 }
-
-@media (min-width: 49rem) {
-
-}
-
 /* -----------------------------------------------------------
   Sidebar links + nav
 ----------------------------------------------------------- */
