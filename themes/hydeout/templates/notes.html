@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% block meta %}
     <meta name="description" content="Available blog articles on bytefish.de." />
     <meta name="keywords" content="pages" />
@@ -14,11 +15,9 @@
     </header>
     <div class="post-body">
     
-    {# 1. Create a filtered list that EXCLUDES notes #}
-    {% set blog_articles = articles | rejectattr("category", "equalto", "notes") %}
+    {% set notes_articles = articles | selectattr("category", "equalto", "notes") %}
 
-    {# 2. Group and loop through only the standard blog articles #}
-    {% for year, date_year in blog_articles | groupby('date.year') | sort(reverse=True) %}
+    {% for year, date_year in notes_articles | groupby('date.year') | sort(reverse=True) %}
       <h2>{{ year }}</h2>
       <dl>
         {% for article in date_year | sort(attribute='date', reverse=True) %}
@@ -31,4 +30,3 @@
   </div>
 </div>
 {% endblock %}
-

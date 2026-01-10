@@ -68,11 +68,10 @@ TRANSLATION_FEED_ATOM = None
 RSS_FEED_SUMMARY_ONLY = True
 # Separate page directory and articles directory:
 PAGE_PATHS = [ 'pages' ]
-ARTICLE_PATHS = [ 'blog' ]
+ARTICLE_PATHS = [ 'blog', 'notes' ]
 # Save index as blog.html instead of index.html:
 INDEX_SAVE_AS = 'blog.html'
 # Profiles for the Sidebar
-SOCIAL_MASTODON = 'https://mastodon.social/@bytefish'
 SOCIAL_GITHUB = 'https://github.com/bytefish'
 # Sidebar
 SIDEBAR_DESCRIPTION = 'Sharing Code &amp; Ideas'
@@ -81,7 +80,9 @@ SECTIONS = [
   ('blog', '/blog.html'),
   ('about', '/about.html'),
   ('pages', '/pages.html'),
+  ('notes', '/notes.html'),
   ('documents', '/documents.html'),]
+  
 # Set some default category:
 DEFAULT_CATEGORY = 'uncategorized'
 # A list of files to copy from the source to the destination
@@ -93,8 +94,8 @@ EXTRA_PATH_METADATA = {
 STATIC_SAVE_AS = 'static/{path}'
 STATIC_PATHS = ['images', 'pdf', 'apps', 'extra/.htaccess', 'extra/robots.txt', 'extra/favicon.ico']
 # Github Base Path:
-GITHUB_ISSUE_PATH='https://github.com/bytefish/bytefish.de/issues'
-GITHUB_SOURCE_PATH='https://github.com/bytefish/bytefish.de/blob/master/blog'
+GITHUB_ISSUE_PATH='https://github.com/bytefish/bytefish.github.io/issues'
+GITHUB_SOURCE_PATH='https://github.com/bytefish/bytefish.github.io/blob/master/blog'
 #Sitemap Settings:
 SITEMAP = {
     'format': 'xml',
