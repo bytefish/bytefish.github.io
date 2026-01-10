@@ -236,8 +236,6 @@ a svg,
 .icon {
   vertical-align: middle;
 }
-
-
 /* The main container */
 .highlight {
   position: relative;
@@ -251,9 +249,9 @@ a svg,
   flex-direction: column;
 }
 
-/* Create the Header Bar background without JavaScript */
+/* Create the Header Bar and "CODE" text without JavaScript */
 .highlight::before {
-  content: ""; /* Visual bar only */
+  content: "CODE"; /* The header label */
   position: absolute;
   top: 0;
   left: 0;
@@ -262,11 +260,18 @@ a svg,
   background-color: #f1f3f4;
   border-bottom: 1px solid #dadce0;
   z-index: 1;
+  /* Label Styling */
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  color: #5f6368;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 /* The Copy Button */
-/* Note: For this to show without JS injection, you must manually 
-   wrap your Pelican code output or use the JS below to just 'activate' it. */
 .copy-btn {
   position: absolute;
   top: 4px;
@@ -335,8 +340,6 @@ a svg,
 .highlight pre::-webkit-scrollbar-thumb:hover {
   background: #bdc1c6;
 }
-
-
 /*
   Layout
 
