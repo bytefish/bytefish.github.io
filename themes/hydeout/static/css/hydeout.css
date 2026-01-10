@@ -237,45 +237,59 @@ a svg,
   vertical-align: middle;
 }
 
-code,
-pre {
-  font-family: Consolas, "Liberation Mono", Menlo, monospace;
+code, pre {
+  font-family: "Roboto Mono", Consolas, Menlo, monospace;
 }
 
 code {
-  background-color: #f9f9f9;
-  border-radius: 3px;
-  color: #bf616a;
-  font-size: 85%;
-  padding: 0.25em 0.5em;
-  word-break: break-word;
+  background-color: #f1f3f4; /* Google's light gray */
+  color: #3c4043;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 90%;
 }
 
 pre {
-  margin-bottom: 1rem;
-  margin-top: 0;
-  max-width: 100%;
+  position: relative;
+  background-color: #f8f9fa; /* Slightly lighter background */
+  border: 1px solid #dadce0; /* Subtle border */
+  border-radius: 8px;        /* Rounded edges */
+  margin: 1.5rem 0;
+  padding: 40px 16px 16px;   /* Extra top padding for button */
   overflow-x: auto;
+  line-height: 1.5;
 }
 
 pre code {
-  background-color: transparent;
-  color: inherit;
-  font-size: 12px;
+  background: transparent;
   padding: 0;
+  color: #202124;
+  font-size: 13px;
+  border: none;
 }
 
-.highlight {
-  background-color: #f9f9f9;
-  border-radius: 0.25rem;
-  font-size: 0.8rem;
-  line-height: 1.4;
-  margin-bottom: 1rem;
-  padding: 1rem;
+.copy-code-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #ffffff;
+  border: 1px solid #dadce0;
+  color: #1a73e8;            /* Google blue */
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
 }
-.highlight pre {
-  margin-bottom: 0;
-  overflow-x: auto;
+
+.copy-code-button:hover {
+  background-color: #f1f3f4;
+  box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3);
+}
+
+.copy-code-button:active {
+  background-color: #e8f0fe;
 }
 
 /*
