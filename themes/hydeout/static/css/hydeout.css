@@ -439,11 +439,44 @@ body {
   .container > header h2:last-child {
     margin-bottom: 0.5rem;
   }
+  
+  .container > * {
+    max-width: 38rem;
+    padding: 0;
+  }
   .container > * {
     max-width: 38rem;
     padding: 0;
   }
 }
+
+@media (min-width: 64rem) {
+  .container > pre {
+    max-width: 56rem;
+    width: 100%;
+    margin-left: 0; 
+  }
+}
+
+@media (max-width: 48rem) {
+  pre {
+    padding-top: 50px; 
+    font-size: 12px;   
+    margin-left: -1rem; 
+    margin-right: -1rem;
+    border-radius: 0;
+  }
+  
+  .copy-code-button {
+    width: 100%;
+    text-align: center;
+    top: 0;
+    right: 0;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 1px solid #dadce0;
+  }
+}
+
 /* -----------------------------------------------------------
   Sidebar links + nav
 ----------------------------------------------------------- */
