@@ -19,7 +19,7 @@ All code can be found in a Git repository at:
 
 ## Screenshots ##
 
-The final application allows you to browse a map and calculcate routes for 3 transportation types:
+The final application allows you to browse a map and calculate routes for 3 transportation types (car, bike, foot):
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
     <a href="/static/images/blog/pgrouting_application/screenshot.jpg">
@@ -34,7 +34,6 @@ We can also do a Network Analysis for finding routing islands in our data:
         <img src="/static/images/blog/pgrouting_application/screenshot-network-analysis.jpg" alt="Route Application Network Analysis">
     </a>
 </div>
-
 
 ## Running the Application ##
 
