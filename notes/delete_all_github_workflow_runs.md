@@ -7,7 +7,7 @@ summary: Deleting all Workflow Runs for a GitHub Action
 
 It took me too long to find this. 😓
 
-If you need to delete all workflow runs of a GitHub, you can do it with PowerShell using this GitHub cli command:
+If you need to delete all workflow runs of a GitHub Action, you can do it with PowerShell using this GitHub cli command:
 
 ```powershell
 gh run list --limit 1000 --json databaseId -q '.[].databaseId' | ForEach-Object { gh run delete $_ }
