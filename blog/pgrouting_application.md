@@ -35,9 +35,7 @@ We can also do a Network Analysis for finding routing islands in our data:
     </a>
 </div>
 
-## Running the Application ##
-
-### Certificates ###
+## Certificates ##
 
 Create and Trust the Developer Certificates using `dotnet`:
 
@@ -46,7 +44,7 @@ dotnet dev-certs https --clean
 dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p SuperStrongPassword --trust
 ```
 
-### Data ###
+## Data ##
 
 I am using the Natural Earth Relief using the following raster tiles:
 
@@ -61,7 +59,7 @@ And you can use these Vector Tiles of Münster (Germany):
 
 * [https://data.maptiler.com/downloads/europe/germany/nordrhein-westfalen/muenster-regbez/](https://data.maptiler.com/downloads/europe/germany/nordrhein-westfalen/muenster-regbez/)
 
-### Configuration ###
+## Configuration ##
 
 In the `.env` file adjust the PBF path: 
 
@@ -130,9 +128,9 @@ In the `.config/client/assets/style/osm_liberty/osm_liberty.json` you'll need to
 }
 ```
 
-### Running the Application ###
+## Running the Application ##
 
-Then you can start the application with:
+Then you can start the application with `docker-compose`:
 
 ```
 docker-compose --profile dev up
