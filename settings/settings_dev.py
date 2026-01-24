@@ -81,6 +81,7 @@ SECTIONS = [
   ('about', '/about.html'),
   ('pages', '/pages.html'),
   ('notes', '/notes.html'),
+  ('apps', '/apps.html'),
   ('documents', '/documents.html'),]
 # Set some default category:
 DEFAULT_CATEGORY = 'uncategorized'
