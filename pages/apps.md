@@ -1,7 +1,7 @@
 title: apps
 date: 2026-01-24 12:58
 author: Philipp Wagner
-template: apps
+template: page
 summary: Small Applications
 
 I have two small girls and sometimes I need some puzzles to keep them busy. So here are some 
