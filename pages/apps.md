@@ -15,7 +15,7 @@ Create and print mazes to keep your children busy during rainy days:
     * [In German](https://www.bytefish.de/static/apps/maze-generator?lang=de)
     * [In French](https://www.bytefish.de/static/apps/maze-generator?lang=fr)
     * [In Spanish](https://www.bytefish.de/static/apps/maze-generator?lang=es)
-    * [In Chinese (Simplified)](https://www.bytefish.de/static/apps/maze-generator?lang=es)
+    * [In Chinese (Simplified)](https://www.bytefish.de/static/apps/maze-generator?lang=zh)
 
 
 ## Wortsalat ##
