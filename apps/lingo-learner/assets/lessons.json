@@ -8,7 +8,7 @@
       "EN": "A story focusing on adjective endings. Pay attention to gender and case.",
       "ES": "Una historia centrada en las terminaciones de adjetivos. Presta atención al género y caso.",
       "FR": "Une histoire axée sur les terminaisons des adjectifs. Faites attention au genre et au cas.",
-      "CN": "一个关注形容词词尾的故事。注意性和格。"
+      "ZH": "一个关注形容词词尾的故事。注意性和格。"
     },
     "segments": [
       { "type": "text", "content": "Heute ist ein wunderbarer Tag. Die Sonne scheint und der Himmel ist blau. Peter kauft sich ein schnell" },
@@ -45,7 +45,7 @@
       "EN": "A letter to a friend. Decide between relative pronoun/article 'das' or conjunction 'dass'.",
       "ES": "Una carta a un amigo. Decide entre el pronombre relativo/artículo 'das' o la conjunción 'dass'.",
       "FR": "Une lettre à un ami. Décidez entre le pronombre relatif/article 'das' ou la conjonction 'dass'.",
-      "CN": "给朋友的一封信。决定使用关系代词/冠词 'das' 还是连词 'dass'。"
+      "ZH": "给朋友的一封信。决定使用关系代词/冠词 'das' 还是连词 'dass'。"
     },
     "segments": [
       { "type": "text", "content": "Lieber Markus,\n\nich hoffe, " },
@@ -76,7 +76,7 @@
       "EN": "A travel report about a trip to Scotland. Fill in the past forms.",
       "ES": "Un informe de viaje sobre una excursión a Escocia. Rellena las formas pasadas.",
       "FR": "Un récit de voyage sur une excursion en Écosse. Remplissez les formes passées.",
-      "CN": "关于苏格兰旅行的报告。填写过去式形式。"
+      "ZH": "关于苏格兰旅行的报告。填写过去式形式。"
     },
     "segments": [
       { "type": "text", "content": "Last summer, my family and I " },
@@ -121,7 +121,7 @@
       "EN": "A detailed detective story. Fill in the verbs in the correct past tense.",
       "ES": "Una historia detallada de detectives. Rellena los verbos en el tiempo pasado correcto.",
       "FR": "Une histoire de détective détaillée. Remplissez les verbes au temps passé correct.",
-      "CN": "详细的侦探故事。用正确的过去式填写动词。"
+      "ZH": "详细的侦探故事。用正确的过去式填写动词。"
     },
     "segments": [
       { "type": "text", "content": "It " },
@@ -202,7 +202,7 @@
       "EN": "Conjugate the verb 'être' (to be) in this story.",
       "ES": "Conjuga el verbo 'être' (ser/estar) en esta historia.",
       "FR": "Conjuguez le verbe 'être' dans cette histoire.",
-      "CN": "在这个故事中变位动词 'être' (是)。"
+      "ZH": "在这个故事中变位动词 'être' (是)。"
     },
     "segments": [
       { "type": "text", "content": "Bonjour! Je m'appelle Claire. Je " },
@@ -237,7 +237,7 @@
       "EN": "A story about last weekend. Fill in the correct form of 'avoir' or 'être' for the past tense.",
       "ES": "Una historia sobre el fin de semana pasado. Rellena la forma correcta de 'avoir' o 'être' para el pasado.",
       "FR": "Une histoire sur le week-end dernier. Remplissez la forme correcte d''avoir' ou 'être' pour le passé composé.",
-      "CN": "关于上周末的故事。填写过去式的正确形式 'avoir' 或 'être'。"
+      "ZH": "关于上周末的故事。填写过去式的正确形式 'avoir' 或 'être'。"
     },
     "segments": [
       { "type": "text", "content": "Le week-end dernier, j' " },
@@ -268,7 +268,7 @@
       "EN": "A mix of past tenses. Decide between ongoing situations (Imparfait) and specific events (Passé Composé).",
       "ES": "Una mezcla de tiempos pasados. Decide entre situaciones continuas (Imparfait) y eventos específicos (Passé Composé).",
       "FR": "Un mélange de temps passés. Décidez entre situations continues (Imparfait) et événements spécifiques (Passé Composé).",
-      "CN": "过去式的混合。决定使用持续情况 (Imparfait) 还是特定事件 (Passé Composé)。"
+      "ZH": "过去式的混合。决定使用持续情况 (Imparfait) 还是特定事件 (Passé Composé)。"
     },
     "segments": [
       { "type": "text", "content": "L'année dernière, quand j' " },
@@ -301,7 +301,7 @@
       "EN": "Choose between Ser and Estar in this letter.",
       "ES": "Elige entre Ser y Estar en esta carta.",
       "FR": "Choisissez entre Ser et Estar dans cette lettre.",
-      "CN": "在这封信中选择 Ser 和 Estar。"
+      "ZH": "在这封信中选择 Ser 和 Estar。"
     },
     "segments": [
       { "type": "text", "content": "¡Hola Mamá!\n\n¿Cómo " },
@@ -340,7 +340,7 @@
       "EN": "Describe what happened yesterday using the simple past (Indefinido).",
       "ES": "Describe lo que pasó ayer usando el pretérito indefinido.",
       "FR": "Décrivez ce qui s'est passé hier en utilisant le passé simple (Indefinido).",
-      "CN": "使用简单过去时 (Indefinido) 描述昨天发生的事情。"
+      "ZH": "使用简单过去时 (Indefinido) 描述昨天发生的事情。"
     },
     "segments": [
       { "type": "text", "content": "Ayer fue un día muy ocupado. Me " },
@@ -373,7 +373,7 @@
       "EN": "Describe habits and situations in the past (Imperfecto).",
       "ES": "Describe hábitos y situaciones en el pasado (Imperfecto).",
       "FR": "Décrivez des habitudes et des situations dans le passé (Imperfecto).",
-      "CN": "描述过去的习惯和情况 (Imperfecto)。"
+      "ZH": "描述过去的习惯和情况 (Imperfecto)。"
     },
     "segments": [
       { "type": "text", "content": "Cuando yo " },
