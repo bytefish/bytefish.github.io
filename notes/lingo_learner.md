@@ -11,7 +11,7 @@ Lingo Learner is a small application to improve your language skills (German, En
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
     <a href="/static/images/notes/lingo-learner.jpg">
-        <img src="/static/images/notes/lingo-learner.jpg" alt="CSV Explorer">
+        <img src="/static/images/notes/lingo-learner.jpg" alt="Lingo Learner">
     </a>
 </div>
 
