@@ -46,6 +46,24 @@ It's here:
     * [In French](https://www.bytefish.de/static/apps/wortsalat?lang=fr)
     * [In Spanish](https://www.bytefish.de/static/apps/wortsalat?lang=es)
 
+## Apps for Learning ##
+
+### Lingo Learner ###
+
+Lingo Learner is a small application to improve your language skills (German, English, French, Spanish).
+
+<div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
+    <a href="/static/images/notes/lingo-learner.jpg">
+        <img src="/static/images/notes/lingo-learner.jpg" alt="CSV Explorer">
+    </a>
+</div>
+
+Available at:
+
+* [https://www.bytefish.de/static/apps/lingo-learner/](https://www.bytefish.de/static/apps/lingo-learner/) (German, English, French, Spanish, Chinese)
+
+At the moment the set of lessons is limited, if you are interested we could work on adding more lessons.
+
 ## Apps for Grown-ups ##
 
 ### CSV Explorer for the Browser ###
