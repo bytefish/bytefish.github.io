@@ -39,8 +39,8 @@ The Web application is available at:
 It has a pretty simple interface and starts in the "Learning mode":
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
-    <a href="/static/images/notes/lingo-learner.jpg">
-        <img src="/static/images/notes/lingo-learner.jpg" alt="Lingo Learner">
+    <a href="/static/images/blog/lingo_learner/01_lingo_learner_learn_mode.jpg">
+        <img src="/static/images/blog/lingo_learner/01_lingo_learner_learn_mode.jpg" alt="Learning Mode">
     </a>
 </div>
 
