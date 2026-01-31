@@ -77,8 +77,9 @@ If you click on "Check" button, your Cloze test is evaluated:
 
 ## Creating your own lessons ##
 
-You want to create your own lessons? It's easy by using the Admin Mode, of the app. You can find it by clicking 
-on "ADMIN MODE" in the upper left corner of the application:
+You want to create your own lessons? It's easy by using the Admin Mode!
+
+You can find it by clicking on "ADMIN MODE" in the upper left corner of the application:
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
     <a href="/static/images/blog/lingo_learner/02_lingo_learner_select_ui_language.jpg">
@@ -88,16 +89,16 @@ on "ADMIN MODE" in the upper left corner of the application:
 
 The Admin Mode has a pretty straightforward interface:
 
-
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
     <a href="/static/images/blog/lingo_learner/04_lingo_learner_admin_mode.jpg">
         <img src="/static/images/blog/lingo_learner/04_lingo_learner_admin_mode.jpg" alt="Select UI Language">
     </a>
 </div>
 
-In the lesson title, you insert the lesson and below you are going to insert an optional description. It's useful 
-to set a description for the language you are going to train with. English is always the fallback, if you didn't 
-give a title in a  user interface language.
+In the upper area, you can insert the lesson title and descriptions for each language. The description is 
+optional, but it's useful to give instructions for the lesson.
+
+English is always the fallback, if you didn't fill out a description.
 
 There are three elements to select from. You can find them in the section below the content elements:
 
@@ -116,9 +117,9 @@ buttons on the left side of the Content Element:
     </a>
 </div>
 
-Sometimes you forgot to add a cloze or you want to change a sentence. You don't want to click hundreds of up 
-and down buttons until you've found your element.  That's why you can expand a content element and you can 
-choose an element to add after your element:
+But you don't want to click the up button a hundred times to move it around.
+
+That's why you can expand a content element and add it behind a given element:
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
     <a href="/static/images/blog/lingo_learner/06_lingo_learner_add_behind_element.jpg">
@@ -126,7 +127,7 @@ choose an element to add after your element:
     </a>
 </div>
 
-And if you want to train word endings, you can glue the cloze to a word:
+If you want to train word endings, you can glue the cloze to a word:
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
     <a href="/static/images/blog/lingo_learner/10_lingo_learner_glue_cloze.jpg">
@@ -136,15 +137,19 @@ And if you want to train word endings, you can glue the cloze to a word:
 
 ## Submitting your lesson to be included ##
 
-If you don't want to self host the app on your server, there is no way to directly add the lesson to the website. 
-You need to submit it to me for inclusion. I will add it to the repository and it gets loaded by the interface, 
-once it has been added to the target lesson folder.
+If you don't want to self host the app on your server, there is no way to directly add the lesson to the website.
 
-Either submit it using a GitHub Issue or sending it by mail to:
+You'll need to submit it to me for inclusion. 
+
+I will add it to the repository and it gets loaded by the interface, once it has been added to the target lesson folder.
+
+Either submit it using a GitHub Issue or send it by mail to:
 
 * `lingo-lesson@bytefish.de`
 
-If you are using the buttons, everything is filled out alread. You just need to add the file:
+If you are using the buttons, the lesson is downloaded and the GitHub Issue or e-Mail is filled out already. 
+
+You'll just need to attach the downloaded file:
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
     <a href="/static/images/blog/lingo_learner/07_submit_proposal.jpg">
@@ -152,16 +157,17 @@ If you are using the buttons, everything is filled out alread. You just need to 
     </a>
 </div>
 
-If you want to start all over, select the "Clear All" Button next to the title.
+Now if you want to start all over, select the "Clear All" Button next to the title.
 
 ## LingoLearner as a Desktop Application ##
 
 If you want to use LingoLearner using a Desktop application, you can get it at:
 
-* [[https://github.com/bytefish/misc/tree/main/lingo-learner-wpf]([https://github.com/bytefish/misc/tree/main/lingo-learner-wpf)
+* [https://github.com/bytefish/misc/tree/main/lingo-learner-wpf]([https://github.com/bytefish/misc/tree/main/lingo-learner-wpf)
 
-The interface basically is the same, except you can now load and store lessons on your own filesystem. Again 
-everything runs local and nothing is transmitted to an external service.
+The interface basically is the same, except you can now load and store lessons on your own filesystem. 
+
+Again everything runs local and nothing is transmitted to an external service.
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
     <a href="/static/images/blog/lingo_learner/08_lingo_learner_desktop_app.jpg">
@@ -170,8 +176,9 @@ everything runs local and nothing is transmitted to an external service.
 </div>
 
 And on the right side of the application you can see, that the buttons has changed and there is a button 
-"Save to Local Library" now. It's going to store the lesson to the `C:/Temp` folder and instantly reload 
-the lessons:
+"Save to Local Library" now. 
+
+It's going to store the lesson to the `C:/Temp` folder and instantly reload all lessons:
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
     <a href="/static/images/blog/lingo_learner/09_lingo_learner_save_to_local_library.jpg">
