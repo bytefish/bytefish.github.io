@@ -59,11 +59,19 @@ You can either start with the default lesson of select the language you want to 
     </a>
 </div>
 
-Once you have finished you lesson and clicked on Check, you can go ahead and find the next lesson to learn with:
+You can select the lesson to train in the top bar:
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
     <a href="/static/images/blog/lingo_learner/03_lingo_learner_select_lesson.jpg">
         <img src="/static/images/blog/lingo_learner/03_lingo_learner_select_lesson.jpg" alt="Select UI Language">
+    </a>
+</div>
+
+If you click on "Check" button, your Cloze test is evaluated:
+
+<div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
+    <a href="/static/images/blog/lingo_learner/10_lingo_learner_check_results.jpg">
+        <img src="/static/images/blog/lingo_learner/10_lingo_learner_check_results.jpg" alt="Select UI Language">
     </a>
 </div>
 
