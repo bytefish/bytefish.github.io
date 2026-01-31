@@ -7,8 +7,10 @@ author: Philipp Wagner
 summary: Introduces LingoLearner, a small application for creating and learning with Cloze tests.
 
 In the past week I have written lingo-learner, which is a small application for 
-learning language by using cloze tests. It allows you to create you own cloze 
-tests and you can run it in the web and on your desktop.
+learning a language by using cloze tests. It allows you to create your own cloze 
+tests.
+
+You can run it in the web and on your desktop.
 
 LingoLearner can be found here:
 
@@ -22,7 +24,7 @@ The implementation for the WPF Desktop application can be found here:
 
 * [https://github.com/bytefish/misc/tree/main/lingo-learner-wpf](https://github.com/bytefish/misc/tree/main/lingo-learner-wpf)
 
-Both implementations run entirely Client-side, so no data is transmitted.
+Both implementations run entirely client-side on your machine. No data is transmitted to external services.
 
 ## Table of contents ##
 
