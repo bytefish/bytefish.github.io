@@ -34,7 +34,6 @@ The Web application is available at:
 
 * [https://www.bytefish.de/static/apps/lingo-learner/](https://www.bytefish.de/static/apps/lingo-learner/)
 
-
 It has a pretty simple interface and starts in the "Learning mode":
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
@@ -92,7 +91,7 @@ In the lesson title, you insert the lesson and below you are going to insert an 
 to set a description for the language you are going to train with. English is always the fallback, if you didn't 
 give a title in a  user interface language.
 
-There are three elements to select from. You can add them to your lesson in the below the content elements:
+There are three elements to select from. You can find them in the section below the content elements:
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
     <a href="/static/images/blog/lingo_learner/04_lingo_learner_elements.jpg">
@@ -100,8 +99,8 @@ There are three elements to select from. You can add them to your lesson in the 
     </a>
 </div>
 
-Once the elements has been added you might want to change the position in the text. You can use up and down 
-buttons on the left of the Content Element:
+Once the element has been added, you might want to change the position in the text. You can use up and down 
+buttons on the left side of the Content Element:
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
     <a href="/static/images/blog/lingo_learner/05_lingo_learner_up_and_down.jpg">
@@ -119,7 +118,7 @@ choose an element to add after your element:
     </a>
 </div>
 
-And if you want to train word endings, you can glue the cloze to a word, if you want to train word endings:
+And if you want to train word endings, you can glue the cloze to a word:
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
     <a href="/static/images/blog/lingo_learner/10_lingo_learner_glue_cloze.jpg">
@@ -129,15 +128,15 @@ And if you want to train word endings, you can glue the cloze to a word, if you 
 
 ## Submitting your lesson to be included ##
 
-If you don't want to self host the app on your server, then there is no way to directly add the lesson you have 
-just created. You need to submit it to me for inclusion. I will add it to the repository and it gets loaded by 
-the interface, once it has been added to the target lesson folder.
+If you don't want to self host the app on your server, there is no way to directly add the lesson to the website. 
+You need to submit it to me for inclusion. I will add it to the repository and it gets loaded by the interface, 
+once it has been added to the target lesson folder.
 
-You can either submit it using a GitHub issue or you can mail it to me, using the mail address:
+Either submit it using a GitHub Issue or sending it by mail to:
 
 * `lingo-lesson@bytefish.de`
 
-If you are using the buttons, everything is filled out. You just need to add the file:
+If you are using the buttons, everything is filled out alread. You just need to add the file:
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
     <a href="/static/images/blog/lingo_learner/07_submit_proposal.jpg">
@@ -153,17 +152,8 @@ If you want to use LingoLearner using a Desktop application, you can get it at:
 
 * [[https://github.com/bytefish/misc/tree/main/lingo-learner-wpf]([https://github.com/bytefish/misc/tree/main/lingo-learner-wpf)
 
-The interface basically is the same, except you can load and store lessons from your own filesystem. Again everything 
-runs local and nothing is transmitted to an external service. 
-
-<div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
-    <a href="/static/images/blog/lingo_learner/07_submit_proposal.jpg">
-        <img src="/static/images/blog/lingo_learner/07_submit_proposal.jpg" alt="Select UI Language">
-    </a>
-</div>
-
-The interface basically is the same, except you can load and store lessons from your own filesystem. Again everything 
-runs local and nothing is transmitted to an external service:
+The interface basically is the same, except you can now load and store lessons on your own filesystem. Again 
+everything runs local and nothing is transmitted to an external service.
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
     <a href="/static/images/blog/lingo_learner/08_lingo_learner_desktop_app.jpg">
@@ -171,15 +161,15 @@ runs local and nothing is transmitted to an external service:
     </a>
 </div>
 
-And on the left side you can see, that the buttons has changed and there is a button "Save to Local Library" now. It's 
-going to store the lesson to the `C:/Temp` folder:
+And on the right side of the application you can see, that the buttons has changed and there is a button 
+"Save to Local Library" now. It's going to store the lesson to the `C:/Temp` folder and instantly reload 
+the lessons:
 
 <div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
     <a href="/static/images/blog/lingo_learner/09_lingo_learner_save_to_local_library.jpg">
         <img src="/static/images/blog/lingo_learner/09_lingo_learner_save_to_local_library.jpg" alt="Select UI Language">
     </a>
 </div>
-
 
 ## Conclusion ##
 
