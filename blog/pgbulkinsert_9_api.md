@@ -6,12 +6,11 @@ slug: pgbulkinsert_9_api
 author: Philipp Wagner
 summary: Introducing the new PgBulkInsert 9.0.0 API.
 
-PgBulkInsert was written in 2016 and I am happy it has gained some traction in 
-the past 10 years. There are quite a few companies using it "under the hood" and 
-it probably eats terabytes day by day.
+PgBulkInsert was written in 2016 and I am happy it has gained some traction in the past 10 years. There are quite a few companies using it "under the hood" and it probably eats terabytes day by day.
 
-So why did I redesign the API and introduced a major breaking change? Mainly because 
-the PgBulkInsert API never sat right with me, and I think it was fundamentally broken 
+So why did I redesign the API and introduced a major breaking change? 
+
+Mainly because the PgBulkInsert API never sat right with me, and I think it was fundamentally broken 
 ever since being released.
 
 The API didn't need a minor refactoring. 
@@ -105,15 +104,14 @@ With this change I was able to delete 50+ mapping methods from the old API. The 
 stateless, thread-safe and lean. It now relies on exactly one method: `.map(columnName, typeDefinition)`. And 
 because the mapping action is now decoupled from the type itself, the `PgMapper` is infinitely extensible. 
 
-You can map a basic string (`PostgresTypes.TEXT.from(...)`) or a complex nested array (`PostgresTypes.array(PostgresTypes.INT4RANGE).from(...)`) 
+You can map a basic string (**PostgresTypes.TEXT.from(...)**) or a complex nested array (**PostgresTypes.array(PostgresTypes.INT4RANGE).from(...)**) 
 using the exact same API surface.
 
 #### 4. `PgBulkWriter`: The Execution Engine ####
 
 In the new architecture, the *What* (your mapping definition) is strictly separated from the *How* (the database execution). 
 
-Once your `PgMapper` is defined, you pass it to the `PgBulkWriter`. It manages the low-level `COPY BINARY` protocol, allocating I/O buffers and 
-streaming your Iterable or Stream directly over the JDBC connection.
+Once your `PgMapper` is defined, you pass it to the `PgBulkWriter`. It manages the low-level `COPY BINARY` protocol, allocating I/O buffers and streaming your Iterable or Stream directly over the JDBC connection.
 
 ### From Runtime Explosions to Compile-Time Guarantees ###
 
