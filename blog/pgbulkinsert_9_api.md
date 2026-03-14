@@ -7,11 +7,11 @@ author: Philipp Wagner
 summary: Introducing the new PgBulkInsert 9.0.0 API.
 
 PgBulkInsert was written in 2016 and I am happy it has gained some traction in 
-the past 10 years. There are quite a few companies using it "under the hood" and 
-it basically... just works.
+the past 10 years. There are quite a few companies using it "under the hood".
 
-Why did I redesign the API and introduced a major breaking change? Because the old 
-API design was broken at its core and it couldn't be fixed. 
+So why did I redesign the API and introduced a major breaking change? Mainly because 
+the PgBulkInsert API never sat right with me, and I think it was fundamentally broken 
+ever since being released.
 
 The API didn't need a minor refactoring. It needed a completely inverted mental model.
 
