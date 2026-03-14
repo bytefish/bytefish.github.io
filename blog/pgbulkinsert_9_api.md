@@ -7,13 +7,16 @@ author: Philipp Wagner
 summary: Introducing the new PgBulkInsert 9.0.0 API.
 
 PgBulkInsert was written in 2016 and I am happy it has gained some traction in 
-the past 10 years. There are quite a few companies using it "under the hood".
+the past 10 years. There are quite a few companies using it "under the hood" and 
+it probably eats terabytes day by day.
 
 So why did I redesign the API and introduced a major breaking change? Mainly because 
 the PgBulkInsert API never sat right with me, and I think it was fundamentally broken 
 ever since being released.
 
-The API didn't need a minor refactoring. It needed a completely inverted mental model.
+The API didn't need a minor refactoring. 
+
+It needed a completely inverted mental model.
 
 All code can be found in a Git repository at:
 
@@ -98,9 +101,9 @@ Method References. This forces explicit null-safety and unlocks our zero-allocat
 
 #### 3. `PgMapper`: The Lean Orchestrator ####
 
-With this change we could delete 50+ mapping methods from the old API. The new `PgMapper` is now entirely stateless, thread-safe and lean. It 
-now relies on exactly one method: `.map(columnName, typeDefinition)`. And because the mapping action is now decoupled from the type itself, 
-the `PgMapper` is infinitely extensible. 
+With this change I was able to delete 50+ mapping methods from the old API. The new `PgMapper` is now entirely 
+stateless, thread-safe and lean. It now relies on exactly one method: `.map(columnName, typeDefinition)`. And 
+because the mapping action is now decoupled from the type itself, the `PgMapper` is infinitely extensible. 
 
 You can map a basic string (`PostgresTypes.TEXT.from(...)`) or a complex nested array (`PostgresTypes.array(PostgresTypes.INT4RANGE).from(...)`) 
 using the exact same API surface.
@@ -158,12 +161,13 @@ your Java code will physically not compile. The IDE will flag it with a red unde
 
 ## Conclusion ##
 
-Re-architecting an established library from the ground up is never an easy decision. But moving PgBulkInsert 
-to a more functional, Database-first design was the only way to fix its inherent design flaws and maybe keep 
-it alive for the decade to come. 
+Re-architecting an established library from the ground up is never an easy decision. 
 
-Migrating takes a lot of effort, I know. If you need help migrating your existing mappings, let me know.
+But moving PgBulkInsert to a more functional, Database-first design was the only way to fix 
+its inherent design flaws and maybe keep it alive for the decade to come. 
 
-A big thank you to everyone who has used, tested, and contributed to PgBulkInsert over the past decade. 
+I know, that migrating takes a lot of effort. So if you need help migrating your existing mappings, let me know.
+
+Finally a **big thank you** to everyone who has used, tested, and contributed to PgBulkInsert over the past decade. 
 
 The 9.0.0 release is out now on Maven Central.
