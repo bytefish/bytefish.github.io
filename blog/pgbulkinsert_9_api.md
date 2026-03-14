@@ -104,7 +104,7 @@ With this change I was able to delete 50+ mapping methods from the old API. The 
 stateless, thread-safe and lean. It now relies on exactly one method: `.map(columnName, typeDefinition)`. And 
 because the mapping action is now decoupled from the type itself, the `PgMapper` is infinitely extensible. 
 
-You can map a basic string (**PostgresTypes.TEXT.from(...)**) or a complex nested array (**PostgresTypes.array(PostgresTypes.INT4RANGE).from(...)**) 
+You can map a basic string (**PostgresTypes.TEXT.from(...)**) or a complex nested array (**PostgresTypes.array( PostgresTypes.INT4RANGE ).from(...)**) 
 using the exact same API surface.
 
 #### 4. `PgBulkWriter`: The Execution Engine ####
