@@ -79,7 +79,7 @@ that contract.
 
 The whole new API is rebuilt around a few core components. If you are migrating to 9.0.0, these are the new tools in your belt:
 
-1. `PostgresTypes`: The Starting Point
+#### 1. `PostgresTypes`: The Starting Point ####
 
 This is the new heart of the library. `PostgresTypes` is a registry containing every supported PostgreSQL data type—from standard 
 `INT4` and `TEXT` to complex types like `JSONB`, `TSRANGE` and multidimensional arrays.
@@ -87,7 +87,7 @@ This is the new heart of the library. `PostgresTypes` is a registry containing e
 Instead of guessing which mapping method to use, you always start here. When you type `PostgresTypes.INT4.`, your IDE immediately 
 understands the binary contract and offers you the exact functional methods allowed for that specific PostgreSQL type.
 
-2. The Extraction Methods (`.primitive()`, `.boxed()`, `.from()`)
+#### 2. The Extraction Methods (`.primitive()`, `.boxed()`, `.from()`) ####
 
 Once you select `INT4` as your Postgres type, you tell the library how to extract that data from your Java entity using functional 
 Method References. This forces explicit null-safety and unlocks our zero-allocation performance:
@@ -96,7 +96,7 @@ Method References. This forces explicit null-safety and unlocks our zero-allocat
 * `.boxed(...)`: The null-safe path. If your database column is nullable and your Java POJO uses an Integer or Long wrapper, you explicitly declare it here.
 * `.from(...)`: The standard extraction path for complex objects like String, UUID, Instant, or custom geometries.
 
-3. `PgMapper`: The Lean Orchestrator
+#### 3. `PgMapper`: The Lean Orchestrator ####
 
 With this change we could delete 50+ mapping methods from the old API. The new `PgMapper` is now entirely stateless, thread-safe and lean. It 
 now relies on exactly one method: `.map(columnName, typeDefinition)`. And because the mapping action is now decoupled from the type itself, 
@@ -105,7 +105,7 @@ the `PgMapper` is infinitely extensible.
 You can map a basic string (`PostgresTypes.TEXT.from(...)`) or a complex nested array (`PostgresTypes.array(PostgresTypes.INT4RANGE).from(...)`) 
 using the exact same API surface.
 
-4. `PgBulkWriter`: The Execution Engine
+#### 4. `PgBulkWriter`: The Execution Engine ####
 
 In the new architecture, the *What* (your mapping definition) is strictly separated from the *How* (the database execution). 
 
