@@ -6,7 +6,8 @@ slug: pgbulkinsert_9_api
 author: Philipp Wagner
 summary: Introducing the new PgBulkInsert 9.0.0 API.
 
-PgBulkInsert was written in 2016 and I am happy it has gained some traction in the past 10 years. There are quite a few companies using it "under the hood" and it probably eats terabytes day by day.
+PgBulkInsert was written in 2016 and I am happy it has gained some traction in the past 10 years. There are 
+quite a few companies using it "under the hood" and it probably eats petabytes day by day.
 
 So why did I redesign the API and introduced a major breaking change? 
 
