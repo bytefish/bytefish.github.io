@@ -164,7 +164,7 @@ foreach (CsvMappingResult<Person> result in results)
 }
 ```
 
-## 4. Core Concept: Row and Line Tracking ##
+## 4. Core Concept: Record and Line Tracking ##
 
 TinyCsvParser distinguishes between two types of indices. This distinction is necessary because CSV 
 files often deviate from a simple "one line equals one record" structure.
@@ -203,7 +203,62 @@ foreach (CsvMappingResult<Person> item in parser.ReadFromStream(stream))
 }
 ```
 
-## 6. Advanced Usage: Accessing CsvRow ##
+## 6. Dynamic Mapping (Dictionary & ExpandoObject) ##
+
+When the CSV schema is only known at runtime, or you want to avoid creating dedicated classes for 
+simple scripts, you can parse rows directly into dynamic structures (`Dictionary<string, object?>` or 
+`ExpandoObject`).
+
+For performance it's maybe better to map to a `Dictionary`, as it avoids Dynamic Language Runtime overhead.
+
+### 6.1 Inline Configuration ###
+
+Use the static factory methods on the `CsvParser` class. The schema is configured inline using a delegate.
+
+```csharp
+using TinyCsvParser;
+
+CsvOptions options = new(Delimiter: ';', QuoteChar: '"', EscapeChar: '"', SkipHeader: false);
+
+// Create the parser and configure the schema in one go
+var parser = CsvParser.CreateDictionaryParser(options, schema => 
+{
+    schema.Add<int>("Id");       // Resolves Int32Converter automatically
+    schema.Add<double>("Price"); // Resolves DoubleConverter automatically
+});
+
+foreach (var result in parser.ReadFromFile("products.csv"))
+{
+    if (result.IsSuccess)
+    {
+        Dictionary<string, object?> row = result.Result;
+        Console.WriteLine($"Item {row["Id"]} costs {row["Price"]}");
+    }
+}
+```
+
+> Note: Use `CsvParser.CreateExpandoParser(...)` if you prefer to access fields via the dynamic keyword like `row.Id`.
+
+### 6.2 Explicit Converters & Custom Providers ###
+
+While `Add<T>` is the most convenient method, you can pass explicit converter instances if you need special configurations 
+(e.g., `date formats`).
+
+```csharp
+var parser = CsvParser.CreateDictionaryParser(options, schema => 
+{
+    schema.Add<int>("Id");
+    schema.Add("BirthDate", new DateTimeConverter("yyyy-MM-dd")); // Explicit Converter
+});
+```
+
+### 6.3 Fallback Behavior ###
+
+Any column present in the CSV header that is not mapped in your `CsvSchema` will automatically be 
+parsed as a raw `string`. This prevents data loss while maintaining strict typing for the columns 
+you care about.
+
+## 7. Advanced Usage: Accessing CsvRow ##
 
 For complex scenarios, `MapUsing` provides direct access to the `ref struct CsvRow`. This is useful for mapping multiple columns 
 into a single property or performing manual validation.
@@ -231,9 +286,9 @@ public class AdvancedMapping : CsvMapping<Person>
 }
 ```
 
-## 7. TypeConverters ##
+## 8. TypeConverters ##
 
-### 7.1 Configuring Existing Converters ###
+### 8.1 Configuring Existing Converters ###
 
 You can pass specific parameters (like date formats) to built-in converters during mapping.
 
@@ -243,7 +298,7 @@ DateTimeConverter dateConverter = new("yyyy-MM-dd");
 MapProperty("BirthDate", x => x.BirthDate, dateConverter);
 ```
 
-### 7.2 Writing a Custom Converter ###
+### 8.2 Writing a Custom Converter ###
 
 Inherit from `NonNullableConverter<T>` to implement custom parsing logic directly on the memory spans.
 
@@ -263,18 +318,18 @@ public class YesNoConverter : NonNullableConverter<bool>
 }
 ```
 
-## 8. Migration from 2.x to 3.x ##
+## 9. Migration from 2.x to 3.x ##
 
-### 8.1 Data Access ###
+### 9.1 Data Access ###
 
 In Version 2.x, custom logic used a `string[]`. In Version 3.0, it uses `ref CsvRow`. This allows the library to work 
 with `ReadOnlySpan<char>`, significantly reducing memory allocations.
 
-### 8.2 Result Pattern ###
+### 9.2 Result Pattern ###
 
 The addition of the Comment state means that Match and Switch now require a third functional argument. Use these overloads to handle metadata rows found in the CSV.
 
-### 8.3 Error Metadata ###
+### 9.3 Error Metadata ###
 
 Error objects in Version 3.0 now contain both `RecordIndex` and `LineNumber`. If you previously relied on indices for debugging, ensure 
 you switch to `LineNumber` for file-based troubleshooting. This is what the user sees in their CSV file.
