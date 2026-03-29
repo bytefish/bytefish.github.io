@@ -21,6 +21,10 @@ The code is available in a Git repository at:
 
 * [https://github.com/bytefish/ODataSecurity](https://github.com/bytefish/ODataSecurity)
 
+## Table of contents ##
+
+[TOC]
+
 ## The Problem: Role Explosion ##
 
 In most enterprise systems, we start with basic roles: `Admin`, `Manager`, `Employee`. This 
@@ -39,10 +43,23 @@ bounded by the *attributes* `Department: Sales` and `Country: Germany`."
 When we try to solve this fine-grained filtering in the application code, for example via a middleware, 
 we usually hit two major walls:
 
-1. **The "Shadow Database" Problem:** To secure a dynamic query in the application layer, you have to perfectly mimic the database's filtering logic. If your code and the SQL engine disagree on even a tiny edge case, like a null-check or a nested join, you've created a security hole. You essentially end up trying to rebuild a simplified version of your database engine in your C# code.
-2. **The Audit Gap:** When security logic is hidden inside complex code blocks, interceptors, or dynamic query builders, it becomes a "black box". If an auditor asks, "What exactly can Jane Smith see?", you can't just give them a clear answer. You have to debug the application and trace execution paths. There is no single "Source of Truth" to verify.
+### The "Shadow Database" Problem 
 
-## The Organizational Wall: Why Centralized Engines Fail ##
+To secure a dynamic query in the application layer, you have to perfectly mimic the database's filtering logic. If 
+your code and the SQL engine disagree on even a tiny edge case, like a null-check or a nested join, you've created 
+a security hole. 
+
+You essentially end up trying to rebuild a simplified version of your database engine in your C# code.
+
+### The Audit Gap 
+
+When security logic is hidden inside complex code blocks, interceptors, or dynamic query builders, it becomes 
+a "black box". If an auditor asks, "What exactly can Jane Smith see?", you can't just give them a clear 
+answer. 
+
+You have to debug the application and trace execution paths. There is no single "Source of Truth" to verify.
+
+## The Organizational Wall (Why Centralized Engines Fail) ##
 
 Modern frameworks like OpenFGA or Open Policy Agent (OPA) are excellent in a vacuum, but 
 in a standard enterprise, they often become a dead-end.
@@ -122,7 +139,7 @@ The application queries **Secured Views** instead of physical tables. This makes
 
 ## The Implementation ##
 
-### Step 1: Designing the Meta-Schema
+### Designing the Meta-Schema
 
 Start by mapping organizational roles to technical permissions and attributes directly in the database.
 
@@ -152,7 +169,7 @@ CREATE TABLE IF NOT EXISTS "User_Role" (
 );
 ```
 
-### Step 2: Defining Helper Function to check for permissions
+### Defining Helper Functions to check for permissions
 
 Next we'll define 3 Helper functions to avoid repetitive SQL Queries. By marking them as 
 `STABLE` they are very efficient and optimized:
@@ -192,7 +209,7 @@ AS $$
 $$;
 ```
 
-### Step 3: Creating the Application Tables and Secured Views 
+### Creating the Application Tables and Secured Views 
 
 In the example we have a HR application to manage employees and their Bonus Payments. A Standard User 
 is not allowed to access the annual salary, bonus goal and is not allowed to list the list of bonus 
