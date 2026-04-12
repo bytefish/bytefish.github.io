@@ -1,21 +1,22 @@
-title: Beyond Roles: A Pragmatic ABAC Architecture for OData
-date: 2026-03-29 14:50
+title: Securing an ASP.NET Core OData Service using Attribute-based Access Control
+date: 2026-04-12 14:50
 tags: csharp, dotnet, odata
 category: dotnet
 slug: aspnetcore_odata_abac
 author: Philipp Wagner
-summary: Beyond Roles: A Pragmatic ABAC Architecture for OData
+summary: This article shows how to secure an OData Service using Attribute-based Access Control. 
 
 OData is a superpower for frontend developers. By exposing a single endpoint, you give clients the ultimate 
 flexibility to query exactly what they need using `$filter`, shape the payload with `$select`, and fetch 
 related data via `$expand`.
 
-But this incredible power is a double-edged sword. When the client can query basically whatever they want, 
-traditional authorization models start to crumble. Role-Based Access Control (RBAC) is far too coarse for 
-this level of dynamic querying. 
+But when the client can query basically whatever they want, then... how on earth do you secure access to 
+your data? And how do you prevent leaking sensistive information? How do you conditionally show or mask 
+data?
 
-In this article we'll take a look at implementing a pragmatic Attribute-based Access Control Architecture 
-using PostgreSQL.
+In this article we'll take a look at using Attribute-based Access Control to secure an ASP.NET Core 
+OData Service. It is built for PostgreSQL and SQL Server, so you are covered with both database 
+systems.
 
 The code is available in a Git repository at:
 
@@ -25,119 +26,294 @@ The code is available in a Git repository at:
 
 [TOC]
 
-## The Problem: Role Explosion ##
+## The Problem ##
 
-In most enterprise systems, we start with basic roles: `Admin`, `Manager`, `Employee`. This 
-works fine for simple APIs. But OData allows users to query specific rows and columns across 
-the entire database.
+My previous approaches at authorizing OData services have been misguided and flawed. They operated 
+at the application layer and left the database wide open. This is wrong.
 
-If you try to secure this with roles alone, you quickly hit **Role Explosion**. Imagine you 
-have 50 departments and 10 countries. If a manager should only see data for their specific 
-department in their specific country, you cannot practically create 500 different roles.
+Authorizing access at the application layer, is a bit like wearing a trench coat with nothing 
+underneath: One loose button and you're exposing everything. Authorization at the database layer 
+is like putting on your pants. Even if you application trips, you aren't showing the world all 
+your private data.
 
-You'll need **Attributes**. You need a way to say: "You have the *role* of Manager, but your access is 
-bounded by the *attributes* `Department: Sales` and `Country: Germany`."
+By moving authorization into the database itself, you ensure that the data remains protected at 
+its core, regardless of which application knocks at the door. 
 
-## Why Application-Layer Proxies Fall Short ##
+## 
 
-When we try to solve this fine-grained filtering in the application code, for example via a middleware, 
-we usually hit two major walls:
+To secure dynamic data access using OData, we'll need to have very fine-grained authorization, 
+that allows us to have Row Level Security and even Field Level Security. We will take a look 
+at Attribute-based Access Control (ABAC) to provide this level of granularity.
 
-### The "Shadow Database" Problem 
+Attribute-based Access Control decides wether a user can access something based on attributes, instead 
+of roles. The attributes are properties of the users, resources, actions, and the environment. Instead 
+of asking *"What role does the user have?"*, ABAC asks *"Do all required match a rule?"*.
 
-To secure a dynamic query in the application layer, you have to perfectly mimic the database's filtering logic. If 
-your code and the SQL engine disagree on even a tiny edge case, like a null-check or a nested join, you've created 
-a security hole. 
+In an ABAC system there are usually four types of attributes to attributes to configure access:
 
-You essentially end up trying to rebuild a simplified version of your database engine in your C# code.
+* User Attributes
+    * Department, Job Title, Location
+* Resource Attributes 
+    * Document Type, Sensitivy, Owner
+* Action Attributes
+    * Read, Write, Delete
+* Context Attributes
+    * Time of day, device type,  
 
-### The Audit Gap 
+These attributes are then combined into a policy, which is evaluated using a Policy engine. 
 
-When security logic is hidden inside complex code blocks, interceptors, or dynamic query builders, it becomes 
-a "black box". If an auditor asks, "What exactly can Jane Smith see?", you can't just give them a clear 
-answer. 
+I won't go deep into theory here. There are way better resources available, than anything I'd 
+come up with. Let's just solve the problem at hand, which is securing our data using the database.
 
-You have to debug the application and trace execution paths. There is no single "Source of Truth" to verify.
+## ASP.NET Core OData ##
 
-## The Organizational Wall (Why Centralized Engines Fail) ##
+The idea is pretty simple. We'll pass the user name into 
 
-Modern frameworks like OpenFGA or Open Policy Agent (OPA) are excellent in a vacuum, but 
-in a standard enterprise, they often become a dead-end.
 
-### A Choice Beyond the Developer
+## ASP.NET Core OData API ##
 
-Deploying a centralized authorization engine is rarely just a "dev choice." It is an architectural commitment 
-that requires **massive organizational buy-in**. These engines act as a global source of truth. If you 
-can't get the entire company, including IT, Security, and Compliance to adopt the engine as the unified 
-standard, you end up managing an isolated, highly complex "security island" just for your one project.
+I won't paste the entire code. But let's outline the most important parts. 
 
-### The Gravity of Existing Infrastructure
+You'll start by extracting the user off a token, or in our simplified example from the 
+HTTP Header. We can add a small middleware to extract it and write it to the HttpContext 
+Items:
 
-Most companies have spent decades building their identity infrastructure around **Active Directory (AD)** or 
-Entra ID. This is where users, departments, and basic groups live. Introducing a centralized engine requires 
-you to synchronize this massive, shifting state into a new format (e.g. relationship tuples).
+```csharp
+// Use a middleware to extract the user identity from the request headers and store it in the HttpContext.Items. This
+// allows us to access the current user's identity in the PostgresSecurityInterceptor when setting the session variable
+// for RLS and FLS in PostgreSQL.
+app.Use(async (context, next) =>
+{
+    var userId = context.Request.Headers["X-User-Id"].FirstOrDefault() ?? "anonymous";
+    context.Items["CurrentUserId"] = userId;
+    await next();
+});
+```
 
-### The Filtering and Pagination Trap
+Next we create an `ICurrentUserService`, which is scoped to the request lifetime. It uses 
+the `IHttpContextAccessor` to extract the username off the `HttpContext.Items`:
 
-OData is built for efficient data retrieval. When a user asks for "the first 50 employees I can see, sorted by 
-hire date," a centralized engine hits a technical wall. Since the engine is outside the database, you can't 
-easily `JOIN` permissions with your data. 
+```csharp
+/// <summary>
+/// Abstraction for getting the current user identity.
+/// </summary>
+public interface ICurrentUserService
+{
+    string GetCurrentUserId();
+}
 
-To solve this, you either:
+/// <summary>
+/// HTTP-specific implementation of the CurrentUserService.
+/// </summary>
+public class CurrentUserService : ICurrentUserService
+{
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-**1. Fetch all IDs in your Database and Check** 
+    public CurrentUserService(IHttpContextAccessor httpContextAccessor)
+    {
+        _httpContextAccessor = httpContextAccessor;
+    }
 
-You fetch all IDs in your database and check them against the engine. This is an N+1 performance disaster.
+    public string GetCurrentUserId()
+    {
+        return _httpContextAccessor.HttpContext?.Items["CurrentUserId"] as string ?? "anonymous";
+    }
+}
+```
 
-**2. Fetch all IDs in your Centralized Engine**
+We'll then write a `DbConnectionInterceptor` for PostgreSQL to pass the user into the PostgreSQL 
+session as the `app.current_user` variable:
 
-You fetch all IDs a user is authorized for in your centralized engine. But listing all available objects is 
-often very expensive and breaks these engines, when given lots of concurrent requests.
+```
+/// <summary>
+/// PostgreSQL-specific interceptor that sets a session variable with the current user's identity.
+/// </summary>
+public class PostgresSecurityInterceptor : DbConnectionInterceptor
+{
+    private readonly ICurrentUserService _currentUserService;
 
-**3. Flatten your data** 
+    public PostgresSecurityInterceptor(ICurrentUserService currentUserService)
+    {
+        _currentUserService = currentUserService;
+    }
 
-You could flatten your data and replicate the engine's relationships back into your SQL tables just so you 
-can perform a join. This completely defeats the purpose of a "decoupled" engine, and introduces a whole new 
-set of problems. 
+    public override async Task ConnectionOpenedAsync(DbConnection connection, ConnectionEndEventData eventData, CancellationToken cancellationToken)
+    {
+        await SetPostgresSessionVariableAsync(connection, cancellationToken);
+    }
 
-## Why not native PostgreSQL RLS? ##
+    public override void ConnectionOpened(DbConnection connection, ConnectionEndEventData eventData)
+    {
+        SetPostgresSessionVariableAsync(connection, CancellationToken.None).GetAwaiter().GetResult();
+    }
 
-Since we are using PostgreSQL, the native Row-Level Security (RLS) feature seems like the logical 
-choice. However, I found it a poor fit for two reasons:
+    private async Task SetPostgresSessionVariableAsync(DbConnection connection, CancellationToken cancellationToken)
+    {
+        string userId = _currentUserService.GetCurrentUserId();
 
-**1. The Masking Challenge:** 
+        // Create a command to set the session variable in PostgreSQL. This variable will be used
+        // for RLS and FLS in the database views.
+        using DbCommand cmd = connection.CreateCommand();
 
-RLS is designed to hide or show rows entirely. It is remarkably difficult to implement "Masking", where a user sees the 
-row but a specific column like `Salary` is returned as `NULL`, just by using RLS Policies.
+        // Sets the session variable 'app.current_user' to the current user's ID. This variable is then used in
+        // the PostgreSQL views for RLS and FLS.
+        cmd.CommandText = "SELECT set_config('app.current_user', @userId, false)";
 
-**2. The Danger of Implicit Logic:** 
+        // Create and Add the parameter to prevent SQL injection and ensure proper handling of special characters
+        DbParameter param = cmd.CreateParameter();
+        
+        param.ParameterName = "@userId";
+        param.Value = userId;
+        
+        cmd.Parameters.Add(param);
 
-RLS is invisible. When a developer writes `SELECT * FROM Employees`, they expect to see the data. If the database 
-silently drops rows based on a hidden policy, debugging becomes a nightmare. There is no visual difference in the 
-code between a "full" query and a "secured" query. 
+        await cmd.ExecuteNonQueryAsync(cancellationToken);
+    }
+}
+```
 
-This lack of explicitness makes it incredibly hard for a team to reason about why certain data is missing or why a join is behaving unexpectedly.
+And we'll implement a similiar interceptor for SQL Server, that uses the `sp_set_session_context` to pass the 
+user into the SQL Server session as `app.current_user`:
 
-## The Conceptual Solution: Security as a Database Session ##
 
-The most pragmatic approach is to move the security boundary to where the data actually lives: the database session.
+```csharp
+/// <summary>
+/// SQL Server-specific interceptor that sets a session context with the current user's identity. This is used for RLS and FLS in SQL Server.
+/// </summary>
+public class SqlServerSecurityInterceptor : DbConnectionInterceptor
+{
+    private readonly ICurrentUserService _currentUserService;
 
-Instead of treating security as a secondary check in your C# code or an external engine, treat it as a **hardened boundary** 
-within the database itself:
+    public SqlServerSecurityInterceptor(ICurrentUserService currentUserService)
+    {
+        _currentUserService = currentUserService;
+    }
 
-**1. Identify:** 
+    public override async Task ConnectionOpenedAsync(DbConnection connection, ConnectionEndEventData eventData, CancellationToken cancellationToken)
+    {
+        await SetSessionContextAsync(connection, cancellationToken);
+    }
 
-Extract the user identity and attributes from the incoming token or header.
+    public override void ConnectionOpened(DbConnection connection, ConnectionEndEventData eventData)
+    {
+        SetSessionContextAsync(connection, CancellationToken.None).GetAwaiter().GetResult();
+    }
 
-**2. Inject:** 
+    private async Task SetSessionContextAsync(DbConnection connection, CancellationToken cancellationToken)
+    {
+        var userId = _currentUserService.GetCurrentUserId();
+        using var cmd = connection.CreateCommand();
+        
+        // SQL Server uses sp_set_session_context to safely store context
+        cmd.CommandText = "EXEC sp_set_session_context @key = N'app.current_user', @value = @userId;";
 
-Use an Interceptor to tell the database session exactly **who** is logged in via a session variable (`app.current_user`).
+        var param = cmd.CreateParameter();
+        
+        param.ParameterName = "@userId";
+        param.Value = userId;
+        
+        cmd.Parameters.Add(param);
 
-**3. Restrict:** 
+        await cmd.ExecuteNonQueryAsync(cancellationToken);
+    }
+}
+```
 
-The application queries **Secured Views** instead of physical tables. This makes the security context explicit: if you want secured data, you query the view.
+Next we'll define the application domain model, which is a one to one mapping to the secure views, we 
+have defined in SQL: 
 
-## The Implementation ##
+```csharp
+/// <summary>
+/// An Employee entity representing an employee in the company. The security for this entity is handled at the 
+/// database level through the view 'vw_Employee_Secure', which implements Row-Level Security (RLS) and 
+/// Field-Level Security (FLS).
+/// </summary>
+public class Employee
+{
+    public int Id { get; set; }
+    
+    public string Name { get; set; } = null!;
+
+    public string Department { get; set; } = null!;
+
+    public decimal? AnnualSalary { get; set; }
+
+    public string? BonusGoal { get; set; }
+
+    public List<BonusPayment> BonusPayments { get; set; } = [];
+}
+
+/// <summary>
+/// A BonusPayment entity representing a bonus payment made to an employee. This is related to 
+/// the Employee entity via the EmployeeId foreign key. The security for this entity is also 
+/// handled at the database level through the view 'vw_BonusPayment_Secure'.
+/// </summary>
+public class BonusPayment
+{
+    public int Id { get; set; }
+
+    public int EmployeeId { get; set; }
+
+    public decimal Amount { get; set; }
+
+    public string? Reason { get; set; }
+
+    public Employee? Employee { get; set; }
+}
+```
+
+The `DbContext` now maps to the secure views, instead of raw tables:
+
+```csharp
+/// <summary>
+/// DbContext mapping the entities to the secure views. The views implement Row-Level Security (RLS) and 
+/// Field-Level Security (FLS) based on the session variable 'app.current_user' that we set in the 
+/// PostgresSecurityInterceptor.
+/// </summary>
+public class AppDbContext : DbContext
+{
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Employee>().ToTable("vw_Employee_Secure");
+
+        modelBuilder.Entity<BonusPayment>().ToTable("vw_BonusPayment_Secure");
+
+        modelBuilder.Entity<Employee>()
+            .HasMany(e => e.BonusPayments)
+            .WithOne(b => b.Employee)
+            .HasForeignKey(b => b.EmployeeId);
+    }
+}
+```
+
+And the `ODataController` now simply becomes:
+
+```csharp
+public class EmployeesController : ODataController
+{
+    private readonly AppDbContext _context;
+
+    public EmployeesController(AppDbContext context)
+    {
+        _context = context;
+    }
+
+    [HttpGet]
+    [EnableQuery]
+    public IActionResult Get()
+    {
+        return Ok(_context.Set<Employee>().AsNoTracking());
+    }
+}
+```
+
+And that's it!
+
+## PostgreSQL Database ##
 
 ### Designing the Meta-Schema
 
@@ -261,9 +437,7 @@ INSERT INTO "User_Role" ("UserId", "RoleName") VALUES
 ON CONFLICT ("UserId", "RoleName") DO NOTHING;
 ```
 
-Now here is the trick: Never expose physical tables to the application. Always expose Views. This also 
-solves the **auditability nightmare**: You can impersonate any user in a SQL tool and see exactly what they 
-see.
+Now here is the trick: Never expose physical tables to the application. Always expose Views.
 
 For the Employee access, we define a View `vw_Employee_Secure`. A user with the Permission `Employee:Read_Public` 
 is allowed to see the rows it. But only a User with the Permission `Salary:Read` is allowed to see the annual 
@@ -349,208 +523,390 @@ GRANT SELECT ON "User_Attribute" TO app_user;
 GRANT SELECT ON "User_Role" TO app_user;
 ```
 
-That's it.
+## SQL Server Database ##
 
-## ASP.NET Core OData API ##
+### Designing the Meta-Schema
 
-I won't paste the entire code. But let's outline the most important parts. 
+Start by mapping organizational roles to technical permissions and attributes directly in the database.
 
-You'll start by extracting the user off a token, or in our simplified example from the 
-HTTP Header. We can add a small middleware to extract it and write it to the HttpContext 
-Items:
+```sql
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Role]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE [dbo].[Role] (
+        [RoleName] NVARCHAR(50) PRIMARY KEY,
+        [Description] NVARCHAR(MAX)
+    );
+END
 
-```csharp
-// Use a middleware to extract the user identity from the request headers and store it in the HttpContext.Items. This
-// allows us to access the current user's identity in the PostgresSecurityInterceptor when setting the session variable
-// for RLS and FLS in PostgreSQL.
-app.Use(async (context, next) =>
-{
-    var userId = context.Request.Headers["X-User-Id"].FirstOrDefault() ?? "anonymous";
-    context.Items["CurrentUserId"] = userId;
-    await next();
-});
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Role_Permission]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE [dbo].[Role_Permission] (
+        [RoleName] NVARCHAR(50) FOREIGN KEY REFERENCES [dbo].[Role]([RoleName]),
+        [Permission] NVARCHAR(100),
+        PRIMARY KEY ([RoleName], [Permission])
+    );
+END
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[User_Role]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE [dbo].[User_Role] (
+        [UserId] NVARCHAR(100),
+        [RoleName] NVARCHAR(50) FOREIGN KEY REFERENCES [dbo].[Role]([RoleName]),
+        PRIMARY KEY ([UserId], [RoleName])
+    );
+END
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[User_Attribute]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE [dbo].[User_Attribute] (
+        [UserId] NVARCHAR(100), 
+        [AttributeKey] NVARCHAR(50), 
+        [AttributeValue] NVARCHAR(100), 
+        PRIMARY KEY ([UserId], [AttributeKey], [AttributeValue])
+    );
+END
+
+GO
 ```
 
-Next we create an `ICurrentUserService`, which is scoped to the request lifetime. It uses 
-the `IHttpContextAccessor` to extract the username off the `HttpContext.Items`:
+### Defining Helper Functions to check for permissions
 
-```csharp
-/// <summary>
-/// Abstraction for getting the current user identity.
-/// </summary>
-public interface ICurrentUserService
-{
-    string GetCurrentUserId();
-}
+We define a set of helper functions to check, if the user is authorized and has the sufficient set 
+of attributes to access a row or field. It looks a bit more verbose, than PostgreSQL, but I think 
+it's still a nice implementation.
 
-/// <summary>
-/// HTTP-specific implementation of the CurrentUserService.
-/// </summary>
-public class CurrentUserService : ICurrentUserService
-{
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public CurrentUserService(IHttpContextAccessor httpContextAccessor)
-    {
-        _httpContextAccessor = httpContextAccessor;
-    }
-
-    public string GetCurrentUserId()
-    {
-        return _httpContextAccessor.HttpContext?.Items["CurrentUserId"] as string ?? "anonymous";
-    }
-}
-```
-
-You'll then write a `DbConnectionInterceptor` to pass the user into the PostgreSQL session as 
-the `app.current_user` variable:
-
-```
-/// <summary>
-/// PostgreSQL-specific interceptor that sets a session variable with the current user's identity.
-/// </summary>
-public class PostgresSecurityInterceptor : DbConnectionInterceptor
-{
-    private readonly ICurrentUserService _currentUserService;
-
-    public PostgresSecurityInterceptor(ICurrentUserService currentUserService)
-    {
-        _currentUserService = currentUserService;
-    }
-
-    public override async Task ConnectionOpenedAsync(DbConnection connection, ConnectionEndEventData eventData, CancellationToken cancellationToken)
-    {
-        await SetPostgresSessionVariableAsync(connection, cancellationToken);
-    }
-
-    public override void ConnectionOpened(DbConnection connection, ConnectionEndEventData eventData)
-    {
-        SetPostgresSessionVariableAsync(connection, CancellationToken.None).GetAwaiter().GetResult();
-    }
-
-    private async Task SetPostgresSessionVariableAsync(DbConnection connection, CancellationToken cancellationToken)
-    {
-        string userId = _currentUserService.GetCurrentUserId();
-
-        // Create a command to set the session variable in PostgreSQL. This variable will be used
-        // for RLS and FLS in the database views.
-        using DbCommand cmd = connection.CreateCommand();
-
-        // Sets the session variable 'app.current_user' to the current user's ID. This variable is then used in
-        // the PostgreSQL views for RLS and FLS.
-        cmd.CommandText = "SELECT set_config('app.current_user', @userId, false)";
-
-        // Create and Add the parameter to prevent SQL injection and ensure proper handling of special characters
-        DbParameter param = cmd.CreateParameter();
-        
-        param.ParameterName = "@userId";
-        param.Value = userId;
-        
-        cmd.Parameters.Add(param);
-
-        await cmd.ExecuteNonQueryAsync(cancellationToken);
-    }
-}
-```
-
-Next we'll define the application domain model, which is a one to one mapping to the secure views, we 
-have defined in SQL: 
-
-```csharp
-/// <summary>
-/// An Employee entity representing an employee in the company. The security for this entity is handled at the 
-/// database level through the view 'vw_Employee_Secure', which implements Row-Level Security (RLS) and 
-/// Field-Level Security (FLS).
-/// </summary>
-public class Employee
-{
-    public int Id { get; set; }
+```sql
+-- Check if the current session user has a specific permission
+CREATE OR ALTER FUNCTION [dbo].[fn_HasPermission] (@Permission NVARCHAR(100))
+RETURNS BIT
+AS
+BEGIN
+    DECLARE @CurrentUserId NVARCHAR(100) = CAST(SESSION_CONTEXT(N'app.current_user') AS NVARCHAR(100));
     
-    public string Name { get; set; } = null!;
+    IF EXISTS (
+        SELECT 1 FROM [dbo].[User_Role] ur
+        JOIN [dbo].[Role_Permission] rp ON rp.[RoleName] = ur.[RoleName]
+        WHERE ur.[UserId] = ISNULL(@CurrentUserId, 'anonymous')
+          AND rp.[Permission] = @Permission
+    )
+        RETURN 1;
 
-    public string Department { get; set; } = null!;
+    RETURN 0;
+END;
+GO
 
-    public decimal? AnnualSalary { get; set; }
 
-    public string? BonusGoal { get; set; }
+-- Check if the current session user has a matching attribute (supports wildcards)
+CREATE OR ALTER FUNCTION [dbo].[fn_HasAttrAccess] (@Key NVARCHAR(50), @Val NVARCHAR(100))
+RETURNS BIT
+AS
+BEGIN
+    DECLARE @CurrentUserId NVARCHAR(100) = CAST(SESSION_CONTEXT(N'app.current_user') AS NVARCHAR(100));
+    
+    IF EXISTS (
+        SELECT 1 FROM [dbo].[User_Attribute] ua
+        WHERE ua.[UserId] = ISNULL(@CurrentUserId, 'anonymous')
+          AND ua.[AttributeKey] = @Key
+          AND (ua.[AttributeValue] = @Val OR ua.[AttributeValue] = '*')
+    )
+        RETURN 1;
 
-    public List<BonusPayment> BonusPayments { get; set; } = [];
-}
+    RETURN 0;
+END;
+GO
 
-/// <summary>
-/// A BonusPayment entity representing a bonus payment made to an employee. This is related to 
-/// the Employee entity via the EmployeeId foreign key. The security for this entity is also 
-/// handled at the database level through the view 'vw_BonusPayment_Secure'.
-/// </summary>
-public class BonusPayment
-{
-    public int Id { get; set; }
+-- Checks if a user is authorized based on a permission and optional attribute
+CREATE OR ALTER FUNCTION [dbo].[fn_Auth] (
+    @Permission NVARCHAR(100),
+    @AttrKey    NVARCHAR(50) = NULL,
+    @AttrValue  NVARCHAR(100) = NULL
+)
+RETURNS BIT
+AS
+BEGIN
+    -- 1. Must have the base permission
+    IF [dbo].[fn_HasPermission](@Permission) = 0
+        RETURN 0;
 
-    public int EmployeeId { get; set; }
+    -- 2. If an attribute check is requested, must have matching attribute
+    IF @AttrKey IS NOT NULL AND [dbo].[fn_HasAttrAccess](@AttrKey, @AttrValue) = 0
+        RETURN 0;
 
-    public decimal Amount { get; set; }
-
-    public string? Reason { get; set; }
-
-    public Employee? Employee { get; set; }
-}
+    RETURN 1;
+END;
+GO
 ```
 
-The `DbContext` now maps to the secure views, instead of raw tables:
+### Creating the Application Tables and Secured Views 
 
-```csharp
-/// <summary>
-/// DbContext mapping the entities to the secure PostgreSQL views. The views implement Row-Level Security (RLS) and 
-/// Field-Level Security (FLS) based on the session variable 'app.current_user' that we set in the 
-/// PostgresSecurityInterceptor.
-/// </summary>
-public class AppDbContext : DbContext
-{
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+In the example we have a HR application to manage employees and their Bonus Payments. A Standard User 
+is not allowed to access the annual salary, bonus goal and is not allowed to list the list of bonus 
+payments for an employee.
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
+Only the Boss of HR is allowed to read the salary and see bonus payments.
 
-        modelBuilder.Entity<Employee>().ToTable("vw_Employee_Secure");
+```sql
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Employee]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Employee] (
+    [Id] INT IDENTITY(1,1) PRIMARY KEY,
+    [Name] NVARCHAR(200) NOT NULL,
+    [Department] NVARCHAR(100) NOT NULL,
+    [AnnualSalary] DECIMAL(18, 2),
+    [BonusGoal] NVARCHAR(2000),
+    [Region] NVARCHAR(50) 
+);
+END
 
-        modelBuilder.Entity<BonusPayment>().ToTable("vw_BonusPayment_Secure");
-
-        modelBuilder.Entity<Employee>()
-            .HasMany(e => e.BonusPayments)
-            .WithOne(b => b.Employee)
-            .HasForeignKey(b => b.EmployeeId);
-    }
-}
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BonusPayment]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE [dbo].[BonusPayment] (
+        [Id] INT IDENTITY(1,1) PRIMARY KEY,
+        [EmployeeId] INT NOT NULL FOREIGN KEY REFERENCES [dbo].[Employee]([Id]),
+        [Amount] DECIMAL(18, 2) NOT NULL,
+        [Reason] NVARCHAR(2000)
+    );
+END
+GO
 ```
 
-And the `ODataController` now simply becomes:
+We can then seed the database with some sample data:
 
-```csharp
-public class EmployeesController : ODataController
-{
-    private readonly AppDbContext _context;
+```sql
+-- Roles
+IF NOT EXISTS (SELECT 1 FROM [dbo].[Role] WHERE [RoleName] = 'Standard_User')
+BEGIN
+    INSERT INTO [dbo].[Role] ([RoleName], [Description]) VALUES 
+    ('Standard_User', 'Normal Employee'),
+    ('HR_Manager', 'Human Resources Manager');
+END
 
-    public EmployeesController(AppDbContext context)
-    {
-        _context = context;
-    }
+-- Permissions
+IF NOT EXISTS (SELECT 1 FROM [dbo].[Role_Permission] WHERE [RoleName] = 'Standard_User' AND [Permission] = 'Employee:Read_Public')
+BEGIN
+    INSERT INTO [dbo].[Role_Permission] ([RoleName], [Permission]) VALUES 
+    ('Standard_User', 'Employee:Read_Public'),
+    ('HR_Manager', 'Employee:Read_Public'),
+    ('HR_Manager', 'Salary:Read');
+END
 
-    [HttpGet]
-    [EnableQuery]
-    public IActionResult Get()
-    {
-        return Ok(_context.Set<Employee>().AsNoTracking());
-    }
-}
+-- User Attributes (for the Department context)
+IF NOT EXISTS (SELECT 1 FROM [dbo].[User_Attribute] WHERE [UserId] = 'jane.smith@firma.de')
+BEGIN
+    INSERT INTO [dbo].[User_Attribute] ([UserId], [AttributeKey], [AttributeValue]) VALUES 
+    ('jane.smith@firma.de', 'Department', 'IT'),
+    ('john.doe@firma.de', 'Department', 'Sales'),
+    ('hr.boss@firma.de', 'Department', '*');
+END
+
+-- User Roles
+IF NOT EXISTS (SELECT 1 FROM [dbo].[User_Role] WHERE [UserId] = 'jane.smith@firma.de')
+BEGIN
+    INSERT INTO [dbo].[User_Role] ([UserId], [RoleName]) VALUES 
+    ('jane.smith@firma.de', 'Standard_User'),
+    ('john.doe@firma.de', 'Standard_User'),
+    ('hr.boss@firma.de', 'HR_Manager');
+END
+
+-- Employees
+IF NOT EXISTS (SELECT 1 FROM [dbo].[Employee] WHERE [Id] IN (1, 2))
+BEGIN
+    SET IDENTITY_INSERT [dbo].[Employee] ON;
+    INSERT INTO [dbo].[Employee] ([Id], [Name], [Department], [AnnualSalary], [BonusGoal], [Region]) VALUES 
+    (1, 'Jane Smith', 'IT', 82000, 'System Uptime', 'North'),
+    (2, 'John Doe', 'Sales', 65000, '10% Sales Increase', 'South');
+    SET IDENTITY_INSERT [dbo].[Employee] OFF;
+END
+
+-- Bonus Payments
+IF NOT EXISTS (SELECT 1 FROM [dbo].[BonusPayment] WHERE [Id] IN (1, 2))
+BEGIN
+    SET IDENTITY_INSERT [dbo].[BonusPayment] ON;
+    INSERT INTO [dbo].[BonusPayment] ([Id], [EmployeeId], [Amount], [Reason]) VALUES 
+    (1, 1, 5000.00, 'Excellent Uptime'),
+    (2, 2, 3000.00, 'Q1 Target Met');
+    SET IDENTITY_INSERT [dbo].[BonusPayment] OFF;
+END
+GO
 ```
 
-And that's it!
+Now here is the trick: Never expose physical tables to the application. Always expose Views.
 
-## Seeing it in action ##
+For the Employee access, we define a View `vw_Employee_Secure`. A user with the Permission `Employee:Read_Public` 
+is allowed to see the rows it. But only a User with the Permission `Salary:Read` is allowed to see the annual 
+salary and bonus goal.
 
-Let's query the API as a Standard Employee, which should only return the 
-public properties and mask everything else:
+```sql
+-- Secure view for Employees
+CREATE OR ALTER VIEW [dbo].[vw_Employee_Secure]
+AS
+SELECT 
+    e.[Id], 
+    e.[Name], 
+    e.[Department],
+    
+    -- FIELD-LEVEL SECURITY
+    -- Mask AnnualSalary if lacks Salary:Read OR lack Department access
+    IIF([dbo].[fn_Auth]('Salary:Read', 'Department', e.[Department]) = 1, e.[AnnualSalary], NULL) AS [AnnualSalary],
+    
+    -- Mask BonusGoal based on base permission
+    IIF([dbo].[fn_Auth]('Salary:Read', NULL, NULL) = 1, e.[BonusGoal], NULL) AS [BonusGoal]
+
+FROM [dbo].[Employee] e
+-- ROW-LEVEL SECURITY
+WHERE [dbo].[fn_Auth]('Employee:Read_Public', NULL, NULL) = 1;
+GO
+```
+
+For the Bonus Payments we need to be even more strict. You should only be able to see bonus 
+payments, if you have the permission `Salary:Read` and you are the departments boss.
+
+```sql
+-- Secure view for Bonus Payments with relationship security
+CREATE OR ALTER VIEW [dbo].[vw_BonusPayment_Secure]
+AS
+SELECT
+    bp.[Id],
+    bp.[EmployeeId],
+    
+    -- FIELD-LEVEL SECURITY: Only visible if user has Salary:Read AND access to parent Employee's department
+    IIF([dbo].[fn_Auth]('Salary:Read', 'Department', e.[Department]) = 1, bp.[Amount], NULL) AS [Amount],
+    IIF([dbo].[fn_Auth]('Salary:Read', 'Department', e.[Department]) = 1, bp.[Reason], NULL) AS [Reason]
+
+FROM [dbo].[BonusPayment] bp
+JOIN [dbo].[Employee] e ON bp.[EmployeeId] = e.[Id]
+-- ROW-LEVEL SECURITY: Bonus payments are filtered out if lacks Salary:Read OR lacks access to the employee's department.
+WHERE [dbo].[fn_Auth]('Salary:Read', 'Department', e.[Department]) = 1;
+GO
+```
+
+Finally you should create a user `ODataApiUser`, which is used by the OData Service to connect with. Make sure, that 
+this user has access to the Views only, so the application is not allowed to bypass the secured views, for example 
+by running raw queries on the physical tables.
+
+```sql
+-- Create a login and user for the API Application
+IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = 'ODataApiLogin')
+BEGIN
+    CREATE LOGIN [ODataApiLogin] WITH PASSWORD = 'YourStrong!AppPassword123';
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = 'ODataApiUser')
+BEGIN
+    CREATE USER [ODataApiUser] FOR LOGIN [ODataApiLogin];
+END
+GO
+
+-- Grant EXECUTE on the security functions so the views can evaluate them
+GRANT EXECUTE ON [dbo].[fn_HasPermission] TO [ODataApiUser];
+GRANT EXECUTE ON [dbo].[fn_HasAttrAccess] TO [ODataApiUser];
+GRANT EXECUTE ON [dbo].[fn_Auth] TO [ODataApiUser];
+
+-- Grant SELECT ONLY on the secure views
+GRANT SELECT ON [dbo].[vw_Employee_Secure] TO [ODataApiUser];
+GRANT SELECT ON [dbo].[vw_BonusPayment_Secure] TO [ODataApiUser];
+
+-- Explicitly ensure NO access to the raw tables
+DENY SELECT ON [dbo].[Employee] TO [ODataApiUser];
+DENY SELECT ON [dbo].[BonusPayment] TO [ODataApiUser];
+
+-- Grant SELECT on metadata tables required for the functions to work
+GRANT SELECT ON [dbo].[Role] TO [ODataApiUser];
+GRANT SELECT ON [dbo].[Role_Permission] TO [ODataApiUser];
+GRANT SELECT ON [dbo].[User_Role] TO [ODataApiUser];
+GRANT SELECT ON [dbo].[User_Attribute] TO [ODataApiUser];
+GO
+```
+
+## Docker Compose Files
+
+
+We add a docker file and put the SQL Statements for both database into a `sql` folder:
+```
+./
+│   docker-compose.yml
+│
+└───sql
+    ├───postgres
+    │       create-database.sql
+    │
+    └───sqlserver
+            create-database.sql
+```
+
+And then we add two profiles for PostgreSQL and SQL Server:
+
+```yml
+version: '3.8'
+
+services:
+  postgres-db:
+    image: postgres:18-alpine
+    container_name: odata_security_postgres
+    profiles:
+      - postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ODataSecurityDemo
+    ports:
+      - "54320:5432"
+    volumes:
+      - ./sql/postgres:/docker-entrypoint-initdb.d/
+    restart: unless-stopped
+    
+  sql-server-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: odata_security_sqlserver
+    profiles:
+      - sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrong!Pass123
+      - MSSQL_PID=Developer
+    ports:
+      - "14330:1433"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools18/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "YourStrong!Pass123", "-C", "-Q", "SELECT 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s    
+      
+  sql-server-init:
+    image: mcr.microsoft.com/mssql-tools:latest
+    profiles:
+      - sqlserver
+    depends_on:
+      sql-server-db:
+        condition: service_healthy
+    volumes:
+      - ./sql/sqlserver/create-database.sql:/init.sql
+    entrypoint: /opt/mssql-tools/bin/sqlcmd -S sql-server-db -U sa -P YourStrong!Pass123 -C -i /init.sql
+```
+
+The SQL Scripts are automatically executed for both systems.
+
+There are two Docker Profiles `postgres` and `sqlserver`.
+
+Let's boot into the Postgres one:
+
+```
+docker-compose --profile postgres up
+```
+
+
+## Seeing it in action
+
+
+In Visual Studio select `ODataDemo.Postgres` in the Launch settings. This sets the `ASPNETCORE_ENVIRONMENT` 
+environment variable to `Postgres`, so the correct connection string is resolved.
+
+Now let's query the API using the `ODataSecurity.http` file coming with the Solution.
+
+As a Standard Employee, we should only see the public properties and mask everything else:
 
 ```
 ### Simple request as a standard employee (Masking applies)
@@ -592,7 +948,7 @@ GET {{HostAddress}}/odata/Employees
 X-User-Id: hr.boss@firma.de
 ```
 
-The Field-Level Security does not apply and we get
+The Field-Level Security does not apply and we get:
 
 ```json
 {
@@ -710,26 +1066,11 @@ Is authorized to see all Bonus Payments for his employees:
 
 ## Conclusion ##
 
-### The Trade-offs ###
+The selling point of this solution is, that it's Fail-Closed by design. ORM mistakes or raw SQL cannot bypass 
+the rules. Your data is protected at its core, and it doesn't matter which application is querying it. You are 
+safe wether it's OData, or an ORM.
 
-Let's take a look at the Pro and Cons of the solution applied in this article.
+While everything looks nice for this simple example, it's probably getting hairy as soon as the requirements 
+and rules get more complex. I will see how it turns to work out in larger projects and adjust.
 
-**The Pros:**
-
-- **Leak-Proof:** Fail-Closed by design. ORM mistakes or raw SQL cannot bypass the rules.
-- **Auditability:** Permissions are deterministic. You can prove what a user sees with a simple SQL query.
-- **Performance:** Filtering happens at the engine level, not in memory.
-
-**The Cons:**
-
-- **SQL Overhead:** You have to manage Views and Functions alongside your migrations.
-- **Sync Responsibility:** You must sync identity attributes (from AD/Entra) into the database meta-tables.
-- **Database Lock-in:** The logic is specific to your database provider (e.g., PostgreSQL).
-
-### Closing Words ###
-
-It was only a few lines of code in PostgreSQL to implement Attribute-based Access Control. I think it's a 
-lean implementation, that everyone in a team is able to understand. You'll effictively avoid the Role Explosion, 
-simplify your application code, and build a system that is fundamentally secure by default. 
-
-Sometimes the most pragmatic solution isn't a new external engine, it's using your database engine.
+Anyways, I think it's a good start for a flexible authorization implementation.
