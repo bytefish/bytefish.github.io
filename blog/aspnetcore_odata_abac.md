@@ -65,7 +65,7 @@ These attributes are then combined into a policy, which is evaluated using a Pol
 I won't go deep into theory here. There are way better resources available, than anything I'd 
 come up with. Let's just solve the problem at hand, which is securing our data using the database.
 
-## ASP.NET Core OData ##
+## ASP.NET Core OData API ##
 
 The idea is pretty simple. The database only exposes views to the user. The views are using a session 
 variable to filter out or mask data for a given user, the filtering being based on attributes and 
