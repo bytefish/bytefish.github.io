@@ -10,8 +10,8 @@ OData is a superpower for frontend developers. By exposing a single endpoint, yo
 flexibility to query exactly what they need using `$filter`, shape the payload with `$select`, and fetch 
 related data via `$expand`.
 
-But when the client can query basically whatever they want, then... how on earth do you secure access to 
-your data? And how do you prevent leaking sensistive information? How do you conditionally show or mask 
+But when a client can query basically whatever they want, then... how on earth do you secure access to 
+your data? And how do you prevent leaking sensitive information? How do you conditionally show or mask 
 data?
 
 In this article we'll take a look at using Attribute-based Access Control to secure an ASP.NET Core 
@@ -67,11 +67,9 @@ come up with. Let's just solve the problem at hand, which is securing our data u
 
 ## ASP.NET Core OData ##
 
-The idea is pretty simple. The database only exposes views to the user. The Views are using a session 
+The idea is pretty simple. The database only exposes views to the user. The views are using a session 
 variable to filter out or mask data for a given user, the filtering being based on attributes and 
 permissions synced to the database.
-
-## ASP.NET Core OData API ##
 
 I won't paste the entire code. But let's outline the most important parts. 
 
