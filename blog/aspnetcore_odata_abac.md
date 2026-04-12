@@ -47,7 +47,7 @@ at Attribute-based Access Control (ABAC) to provide this level of granularity.
 
 Attribute-based Access Control decides wether a user can access something based on attributes, instead 
 of roles. The attributes are properties of the users, resources, actions, and the environment. Instead 
-of asking *"What role does the user have?"*, ABAC asks *"Do all required match a rule?"*.
+of asking *"What role does the user have?"*, ABAC asks *"Do all required attributes match a rule?"*.
 
 In an ABAC system there are usually four types of attributes to attributes to configure access:
 
