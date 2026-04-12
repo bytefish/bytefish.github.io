@@ -1070,6 +1070,6 @@ the rules. Your data is protected at its core, and it doesn't matter which appli
 safe wether it's OData, or an ORM.
 
 While everything looks nice for this simple example, it's probably getting hairy as soon as the requirements 
-and rules get more complex. I will see how it turns to work out in larger projects and adjust.
+and rules get more complex. I will see how it turns out to work in larger projects and then adjust.
 
-Anyways, I think it's a good start for a flexible authorization implementation.
+Anyways, I think it's a good start towards a flexible authorization implementation!
