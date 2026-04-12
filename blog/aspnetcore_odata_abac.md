@@ -39,7 +39,7 @@ your private data.
 By moving authorization into the database itself, you ensure that the data remains protected at 
 its core, regardless of which application knocks at the door. 
 
-## 
+## Attribute-based Access Control
 
 To secure dynamic data access using OData, we'll need to have very fine-grained authorization, 
 that allows us to have Row Level Security and even Field Level Security. We will take a look 
@@ -67,8 +67,9 @@ come up with. Let's just solve the problem at hand, which is securing our data u
 
 ## ASP.NET Core OData ##
 
-The idea is pretty simple. We'll pass the user name into 
-
+The idea is pretty simple. The database only exposes views to the user. The Views are using a session 
+variable to filter out or mask data for a given user, the filtering being based on attributes and 
+permissions synced to the database.
 
 ## ASP.NET Core OData API ##
 
