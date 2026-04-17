@@ -54,4 +54,4 @@ To change the Global Shortcut click into the Shortcut Box and press your desired
 
 ## Feedback ##
 
-I would appreciate a little feedback and feel free to raise issues or ask for features.
+I would appreciate a little feedback! 🙃
