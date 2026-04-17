@@ -1,4 +1,4 @@
-title: File Lock Check 
+title: Who's locking my file? Find out with FileLockCheck for Windows!
 date: 2026-04-17 20:50
 tags: wpf, dotnet
 category: dotnet
