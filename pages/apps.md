@@ -66,6 +66,21 @@ At the moment the set of lessons is limited, if you are interested we could work
 
 ## Apps for Grown-ups ##
 
+### PostgreSQL Query Plan Visualizer ###
+
+A Web app to visualize PostgreSQL `EXPLAIN` query plans and export them as PNG.
+
+<div style="display:flex; align-items:center; justify-content:center;margin-bottom:15px;">
+    <a href="/static/images/notes/pg-planner.jpg">
+        <img src="/static/images/notes/pg-planner.jpg" alt="CSV Explorer">
+    </a>
+</div>
+
+It's here:
+
+* [https://www.bytefish.de/static/apps/pgplan-viz/](https://www.bytefish.de/static/apps/pgplan-viz/) (English)
+
+
 ### CSV Explorer for the Browser ###
 
 I sometimes need a quick way to analyze CSV files without starting Excel. 
