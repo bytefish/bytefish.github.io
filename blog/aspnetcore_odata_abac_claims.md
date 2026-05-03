@@ -124,7 +124,7 @@ public class CurrentUserService : ICurrentUserService
 We'll then write a `DbConnectionInterceptor` for PostgreSQL to pass the user into the PostgreSQL 
 session as the `app.current_user` variable:
 
-```
+```csharp
 /// <summary>
 /// PostgreSQL-specific interceptor that sets a session variable with the current user's identity.
 /// </summary>
