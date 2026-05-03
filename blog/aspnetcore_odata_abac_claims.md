@@ -1,20 +1,23 @@
-title: Securing an ASP.NET Core OData Service using Attribute-based Access Control (Update)
+title: Securing an ASP.NET Core OData Service using Attribute-based Access Control
 date: 2026-05-03 14:50
 tags: csharp, dotnet, odata
 category: dotnet
 slug: aspnetcore_odata_abac_claims
 author: Philipp Wagner
-summary: This article shows how to secure an OData Service using Attribute-based Access Control and Claims
+summary: This article shows how to secure an OData Service using Attribute-based Access Control
 
-The last article on securing an OData API using Attribute-based Access Control 
-was a good first step at tackling the problem. But I think the database 
-model needs to be adjusted.
+OData is a superpower for frontend developers. By exposing a single endpoint, you give clients the ultimate 
+flexibility to query exactly what they need using `$filter`, shape the payload with `$select`, and fetch 
+related data via `$expand`.
 
-Modern Identity Providers, such as Microsoft Entra ID, are based on Claims and 
-the previous database model would require us to preprocess the incoming data, 
-which is error-prone.
+But when a client can query basically whatever they want, then... how on earth do you secure access to 
+your data? And how do you prevent leaking sensitive information? How do you conditionally show or mask 
+data?
 
-Let's simplify it.
+In this article we'll take a look at using Attribute-based Access Control to secure an ASP.NET Core 
+OData Service. It is built for PostgreSQL and SQL Server, so you are covered with both database 
+systems.
+
 
 The code is available in a Git repository at:
 
