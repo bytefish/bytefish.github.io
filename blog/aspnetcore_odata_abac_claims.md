@@ -347,7 +347,7 @@ And based upon it we'll create a view with the Effective Claims of a given user,
 which is the . Let's add a lineage for auditing, so we know where the Claim 
 originally came from.
 
-```csharp
+```sql
 -- ============================================================================
 -- EFFECTIVE CLAIMS VIEW
 -- ============================================================================
