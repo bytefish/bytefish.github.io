@@ -7,7 +7,7 @@ author: Philipp Wagner
 summary: This article shows how to secure an OData Service using Attribute-based Access Control and Claims
 
 The last article on securing an OData API using Attribute-based Access Control 
-was a good first step at tackling the problem. But I think the data database 
+was a good first step at tackling the problem. But I think the database 
 model needs to be adjusted.
 
 Modern Identity Providers, such as Microsoft Entra ID, are based on Claims and 
