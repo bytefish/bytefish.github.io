@@ -13,7 +13,7 @@ In this article I want to introduce you to Absurd.NET, which is a .NET SDK built
 > and retries, and it does all of that without needing any other services to run in addition 
 > to Postgres.
 
-All SQL scripts for creating the Absurd workflow inside your Postgres database are available at:
+All SQL scripts for creating the Absurd workflow system inside your Postgres database are available at:
 
 * [https://github.com/earendil-works/absurd](https://github.com/earendil-works/absurd)
 
