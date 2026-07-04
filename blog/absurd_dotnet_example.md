@@ -27,7 +27,7 @@ All code is available in a Git repository at:
 
 ## What we are going to build ##
 
-The classic examples for durable execution are usually e-commerce checkouts or payment processing scenarios. But there's an interesting use case developers are dealing with: Autonomous AI Agents. 
+The classic examples for durable execution are usually e-commerce checkouts or payment processing scenarios. But there's a more recent, interesting use case developers are dealing with: Autonomous AI Agents. 
 
 Building AI agents that interact with external APIs, write code or execute complex workflows introduces challenges.
 
@@ -96,11 +96,9 @@ public class AgentResult
 
 ## The LLM Service ##
 
-We need a service to handle the AI code generation. 
+In reality an LLM would be used to generate the code, so we are defining an `ILlmService`. 
 
-We are wrapping the expensive calls to the LLM with Absurd.NET, so we don't lose all our state, if the server crashes.
-
-For this demonstration, we are simulating ab LLM API call with some delay and return a hardcoded "code fixes" based on a reviewer's feedback:
+For this demonstration, we are simulating an LLM API call with some delay and return a hardcoded "code fixes" based on a reviewer's feedback:
 
 ```csharp
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
@@ -138,14 +136,11 @@ public class LlmService : ILlmService
 }
 ```
 
-The agent needs to interact with the outside world, this is what the Github service is for. 
+The agent needs to interact with the outside world, this is what the `IGitHubService` is for. 
 
 It handles fetching the initial issue details and creating the final Pull Request. 
 
-Whenever the LLM has generated has generated a solution, we use it zo request a human review (think of a comment in a GitHub PR).
-
-If the LLM has been using more than 
-a maximum amounts, the issue needs to be escalated to a lead developer.
+And whenever the LLM has generated a solution, we use it to request a human review, think of a comment in a GitHub PR.
 
 ```csharp
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
