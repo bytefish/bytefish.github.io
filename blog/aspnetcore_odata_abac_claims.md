@@ -18,7 +18,6 @@ In this article we'll take a look at using Attribute-based Access Control to sec
 OData Service. It is built for PostgreSQL and SQL Server, so you are covered with both database 
 systems.
 
-
 The code is available in a Git repository at:
 
 * [https://github.com/bytefish/ODataSecurity](https://github.com/bytefish/ODataSecurity)
