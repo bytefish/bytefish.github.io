@@ -28,7 +28,9 @@ All code is available in a Git repository at:
 ## What we are going to build ##
 
 The classic examples for durable execution are usually e-commerce checkouts or payment processing scenarios. But there's another rapidly 
-growing use case developers are dealing with: Autonomous AI Agents. Building AI agents that interact with external APIs, write code, 
+growing use case developers are dealing with: Autonomous AI Agents. 
+
+Building AI agents that interact with external APIs, write code, 
 or execute complex workflows introduces challenges.
 
 1. LLM API calls are inherently slow, prone to timeouts or rate limits. And they are also quite expensive, right? If a server crashes 
@@ -36,14 +38,16 @@ or restarts while waiting for a 30-second AI generation, standard async and awai
 2. You don't want an AI to push code to production or execute financial transactions without a human looking at it. Agents need to pause 
 their execution, ask a human for permission and resume only when approved. This is sometimes hours or days later.
 
-Traditional approaches require you to build complex state machines, database polling loops, or heavy external infrastructure. With Absurd.NET, 
-we can write our agent as standard, sequential C# code. The framework will automatically checkpoint the state to Postgres, sleep without blocking 
-server threads, and wake up exactly where it left off.
+Traditional approaches require you to build complex state machines, database polling loops, or heavy external infrastructure. 
+
+With Absurd.NET, we can write our agent as standard, sequential C# code. The framework will automatically checkpoint the state to Postgres, sleep without blocking server threads, and wake up exactly where it left off.
 
 ## Building an Agent Job ##
 
 To demonstrate how durable execution with Absurd.NET works, we are going to build an autonomous AI agent that 
-fixes bugs. The workflow is quickly laid out as: 
+fixes bugs. 
+
+The workflow is quickly laid out as: 
 
 1. The agent receives a GitHub issue ID and fetches the stack trace.  
 2. It generates a potential code fix using a Large Language Model (LLM).  
@@ -96,9 +100,12 @@ public class AgentResult
 
 ## The LLM Service ##
 
-Next, we need a service to handle the AI code generation. In the real world, calling an LLM is a slow (and expensive) and the HTTP 
-requests might fail or time out. We are wrapping these expensive calls with Absurd.NET, so we don't lose all our state, if the 
-server crashes.
+Next, we need a service to handle the AI code generation. 
+
+In the real world, calling an LLM is slow (and expensive) and the HTTP 
+requests might fail or time out. 
+
+We are wrapping these expensive calls with Absurd.NET, so we don't lose all our state, if the server crashes.
 
 For this demonstration, we are simulating ab LLM API call with some delay and return a hardcoded "code fixes" based on a reviewer's feedback:
 
@@ -138,9 +145,14 @@ public class LlmService : ILlmService
 }
 ```
 
-The agent needs to interact with the outside world. The GitHub service handles fetching the initial issue details and creating the final 
-Pull Request. Whenever the LLM has generated has generated a solution, a human review is requested. If the LLM has been using more than 
-a maximum amounts, the issue is escalated to a lead developer.
+The agent needs to interact with the outside world, this is what the Github service is for. 
+
+It handles fetching the initial issue details and creating the final Pull Request. 
+
+Whenever the LLM has generated has generated a solution, we use it zo request a human review (think of a comment in a GitHub PR).
+
+If the LLM has been using more than 
+a maximum amounts, the issue needs to be escalated to a lead developer.
 
 ```csharp
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
@@ -205,12 +217,15 @@ public class GitHubService : IGitHubService
 
 ## The Autonomous Agent Job ##
 
-We define our logic inside an `IJob`. The magic is in the `ctx.Step` method: every time a step completes, its result is automatically checkpointed to the Postgres 
-database. If the process crashes or is restarted, the framework replays the job. It skips the already completed steps and loads their results directly from 
-the database.
+We define our logic inside an `IJob`. 
 
-And then instead of blocking a thread with `Task.Delay` or an infinite polling loop, we use `ctx.AwaitEvent` to wait for human interaction. This instructs the 
-engine to safely suspend the workflow state to the database and free up the worker until an external system fires the specific event being awaited.
+The magic is in the `ctx.Step` method: every time a step completes, its result is automatically checkpointed to the Postgres database. 
+
+If the process crashes or is restarted, the framework replays the job. It skips the already completed steps and loads their results directly from the database.
+
+And then instead of blocking a thread with `Task.Delay` or an infinite polling loop, we use `ctx.AwaitEvent` to wait for human interaction. 
+
+This instructs the engine to suspend the workflow state to the database and free up the worker until an external system fires the specific event being awaited.
 
 ```csharp
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
@@ -319,7 +334,9 @@ public class AutonomousAgentJob : IJob<AgentTask, AgentResult>
 
 What's left is registering all dependencies.
 
-In the example I have used TestContainers to spin up a Postgres instance. The Connection String for this instance is then passed to the 
+In the example I have used TestContainers to spin up a Postgres instance. 
+
+The Connection String for this instance is then passed to the 
 `IServiceCollection#AddAbsurdSdk(string connectionString)` Extension method, that registers and wires up all dependencies for interacting 
 with the Postgres database.
 
