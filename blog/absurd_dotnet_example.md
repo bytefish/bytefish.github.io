@@ -27,27 +27,23 @@ All code is available in a Git repository at:
 
 ## What we are going to build ##
 
-The classic examples for durable execution are usually e-commerce checkouts or payment processing scenarios. But there's another rapidly 
-growing use case developers are dealing with: Autonomous AI Agents. 
+The classic examples for durable execution are usually e-commerce checkouts or payment processing scenarios. But there's an interestinh use case developers are dealing with: Autonomous AI Agents. 
 
-Building AI agents that interact with external APIs, write code, 
-or execute complex workflows introduces challenges.
+Building AI agents that interact with external APIs, write code or execute complex workflows introduces challenges.
 
-1. LLM API calls are inherently slow, prone to timeouts or rate limits. And they are also quite expensive, right? If a server crashes 
-or restarts while waiting for a 30-second AI generation, standard async and await state is lost forever. 
-2. You don't want an AI to push code to production or execute financial transactions without a human looking at it. Agents need to pause 
-their execution, ask a human for permission and resume only when approved. This is sometimes hours or days later.
+1. LLM APIs are slow anf prone to timeouts or rate limits. They are also quite expensive, right? So if a server crashes, you want to keep the state.
+2. You don't want AI to push code to production without human oversight. This is sometimes hours or days later.
 
-Traditional approaches require you to build complex state machines, database polling loops, or heavy external infrastructure. 
+Traditional approaches require you to build complex state machines, database polling loops and lots of infrastructure code. 
 
-With Absurd.NET, we can write our agent as standard, sequential C# code. The framework will automatically checkpoint the state to Postgres, sleep without blocking server threads, and wake up exactly where it left off.
+With Absurd.NET we can write our agent as standard, sequential C# code. The framework will automatically checkpoint the state to Postgres, sleep without blocking server threads and wake up exactly where it left off.
 
 ## Building an Agent Job ##
 
 To demonstrate how durable execution with Absurd.NET works, we are going to build an autonomous AI agent that 
 fixes bugs. 
 
-The workflow is quickly laid out as: 
+The workflow is laid out as: 
 
 1. The agent receives a GitHub issue ID and fetches the stack trace.  
 2. It generates a potential code fix using a Large Language Model (LLM).  
@@ -100,10 +96,9 @@ public class AgentResult
 
 ## The LLM Service ##
 
-Next, we need a service to handle the AI code generation. 
+We need a service to handle the AI code generation. 
 
-In the real world, calling an LLM is slow (and expensive) and the HTTP 
-requests might fail or time out. 
+HTTP Requests to an LLM are often slow, they might fail or time out (and they are expensive).
 
 We are wrapping these expensive calls with Absurd.NET, so we don't lose all our state, if the server crashes.
 
@@ -201,7 +196,7 @@ public class GitHubService : IGitHubService
 
     public async Task EscalateToSeniorAsync(string id, string reason, CancellationToken ct)
     {
-        _logger.LogCritical("ESCALATION to Senior Developer: Issue #{id} - Grund: {reason}", id, reason);
+        _logger.LogCritical("ESCALATION to Senior Developer: Issue #{id} - Reason: {reason}", id, reason);
 
         await Task.Delay(500, ct);
     }
