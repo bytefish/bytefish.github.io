@@ -27,11 +27,11 @@ All code is available in a Git repository at:
 
 ## What we are going to build ##
 
-The classic examples for durable execution are usually e-commerce checkouts or payment processing scenarios. But there's an interestinh use case developers are dealing with: Autonomous AI Agents. 
+The classic examples for durable execution are usually e-commerce checkouts or payment processing scenarios. But there's an interesting use case developers are dealing with: Autonomous AI Agents. 
 
 Building AI agents that interact with external APIs, write code or execute complex workflows introduces challenges.
 
-1. LLM APIs are slow anf prone to timeouts or rate limits. They are also quite expensive, right? So if a server crashes, you want to keep the state.
+1. LLM APIs are slow and prone to timeouts or rate limits. They are also quite expensive, right? So if a server crashes, you want to keep the state.
 2. You don't want AI to push code to production without human oversight. This is sometimes hours or days later.
 
 Traditional approaches require you to build complex state machines, database polling loops and lots of infrastructure code. 
@@ -98,9 +98,7 @@ public class AgentResult
 
 We need a service to handle the AI code generation. 
 
-HTTP Requests to an LLM are often slow, they might fail or time out (and they are expensive).
-
-We are wrapping these expensive calls with Absurd.NET, so we don't lose all our state, if the server crashes.
+We are wrapping the expensive calls to the LLM with Absurd.NET, so we don't lose all our state, if the server crashes.
 
 For this demonstration, we are simulating ab LLM API call with some delay and return a hardcoded "code fixes" based on a reviewer's feedback:
 
