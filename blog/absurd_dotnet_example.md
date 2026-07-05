@@ -136,6 +136,8 @@ public class LlmService : ILlmService
 }
 ```
 
+## The GitHub Service ##
+
 The agent needs to interact with the outside world, this is what the `IGitHubService` is for. 
 
 It handles fetching the initial issue details and creating the final Pull Request. 
