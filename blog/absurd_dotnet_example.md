@@ -32,7 +32,7 @@ The classic examples for durable execution are usually e-commerce checkouts or p
 Building AI agents that interact with external APIs, write code or execute complex workflows introduces challenges.
 
 1. LLM APIs are slow and prone to timeouts or rate limits. They are also quite expensive, right? So if a server crashes, you want to keep the state.
-2. You don't want AI to push code to production without human oversight. This is sometimes hours or days later.
+2. You don't want AI to push code to production without human oversight.  This is sometimes takes hours or days, so the workflow needs to be idle.
 
 Traditional approaches require you to build complex state machines, database polling loops and lots of infrastructure code. 
 
