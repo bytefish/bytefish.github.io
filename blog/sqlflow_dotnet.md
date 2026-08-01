@@ -9,11 +9,7 @@ summary: This article shows how to build an Autonomous AI Agent with SqlFlow
 SqlFlow is a simple durable execution workflow system, for PostgreSQL and SQL Server. It handles scheduling 
 and retries, without needing any other services to run in addition to PostgreSQL or SQL Server.
 
-The SQL Script for creating the SqlFlow Database Schema is available here:
-
-* [https://github.com/bytefish/SqlFlow/blob/main/sql/](https://github.com/bytefish/SqlFlow/blob/main/sql)
-
-The SQL Script for creating the SqlFlow Database Schema is available here:
+The SQL Scripts for the SqlFlow Database Schemas are available here:
 
 * [https://github.com/bytefish/SqlFlow/blob/main/sql/](https://github.com/bytefish/SqlFlow/blob/main/sql)
 
@@ -28,7 +24,7 @@ It took a large deal of inspiration from [Absurd], but features a simpler databa
 ## Why I have written it ##
 
 I've started my career in 2012 and was quickly introduced to the "Microsoft Way" of doing workflows: Windows 
-Workflow Foundation (WF). WF was .NET framework, that allowed you to orchestrate business processes using 
+Workflow Foundation (WF). WF was a .NET framework, that allowed you to orchestrate business processes using 
 XAML-based code, that executes directly inside your applications.
 
 In reality? Imagine having 10,000 workflow instances with all their state serialized as a binary blob 
