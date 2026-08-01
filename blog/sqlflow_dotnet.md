@@ -21,42 +21,6 @@ It took a large deal of inspiration from [Absurd], but features a simpler databa
 
 [TOC]
 
-## Why I have written it ##
-
-I've started my career in 2012 and was quickly introduced to the "Microsoft Way" of doing workflows: Windows 
-Workflow Foundation (WF). WF was a .NET framework, that allowed you to orchestrate business processes using 
-XAML-based code, that executes directly inside your applications.
-
-In reality? Imagine having 10,000 workflow instances with all their state serialized as a binary blob 
-into your database. Modify a single class or workflow definition and boom... your binary data no longer 
-matches your code, triggering catastrophical serialization errors.
-
-Back then, we have used WF to configure hardware on-site, so a broken state wasn't just a bug, it 
-meant someone physically visiting a site to force a hardware reset. This turned every tiny rollout 
-into a nightmare, a minimally invasive heart surgery.
-
-This taught me two things:
-
-1. Avoid Workflow Engines as long as possible in a project!
-2. Any kind of Domain Specific Language, such as XAML, is a leaky abstraction. The code IS the workflow definition.
-
-## Durable Workflow Systems make a Comeback ##
-
-Building reliable background logic, however, is very hard. Your API returns a HTTP Status 500, database 
-timeouts, your server crashes, ... so you'll need retry policies, state tables, and you'll need to handle 
-idempotency.
-
-Modern execution engines such as *Temporal* fix this by letting you write ordinary C# code, that automatically 
-survives server crashes, network drops, and process restarts. You just sprinkle in some primitives provided 
-by a SDK.
-
-But Solutions like *Temporal* come with quite a complex infrastructure, that requires you to deploy, host and 
-operate an entire distributed platform just to manage state. This is often too much upfront investment for a 
-quick üroof of concept.
-
-That's why SqlFlow requires just a Postgres or SQL Server  database to manage state, and comes with a .NET SDK 
-to provide primitives for durable workflow execution. In the next sections you'll learn how to use it.
-
 ## .NET Setup ##
 
 To include SqlFlowSdk in your project, install the NuGet package using the .NET CLI:
