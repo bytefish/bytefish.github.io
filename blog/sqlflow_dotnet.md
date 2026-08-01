@@ -6,7 +6,7 @@ slug: sqlflow_dotnet
 author: Philipp Wagner
 summary: This article shows how to build an Autonomous AI Agent with SqlFlow
 
-SqlFlow is a simple durable execution workflow system, for PostgreSQL and SQL Server. It handles scheduling 
+SqlFlow is a simple durable execution workflow system for PostgreSQL and SQL Server. It handles scheduling 
 and retries, without needing any other services to run in addition to PostgreSQL or SQL Server.
 
 The SQL Scripts for the SqlFlow Database Schemas are available here:
