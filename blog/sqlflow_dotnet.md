@@ -21,47 +21,19 @@ It took a large deal of inspiration from [Absurd], but features a simpler databa
 
 [Absurd]: https://github.com/earendil-works/absurd
 
-## Table of contents ##
+# Table of contents #
 
 [TOC]
 
-## Why I have written it ##
 
-I've started my career in 2012 and was quickly introduced to the "Microsoft Way" of doing workflows: Windows 
-Workflow Foundation (WF). WF was .NET framework, that allowed you to orchestrate business processes using 
-XAML-based code, that executes directly inside your applications.
+# Getting Started with the Database #
 
-In reality? Imagine having 10,000 workflow instances with all their state serialized as a binary blob 
-into your database. Modify a single class or workflow definition and boom... your binary data no longer 
-matches your code, triggering catastrophical serialization errors.
+You'll start by creating the `ssf` database schema and tables:
 
-Back then, we have used WF to configure hardware on-site, so a broken state wasn't just a bug, it 
-meant someone physically visiting a site to force a hardware reset. This turned every tiny rollout 
-into a nightmare, a minimally invasive heart surgery.
+* PostgreSQL: `sql/ssf-postgres.sql`
+* SQL Server: `sql/ssf-sqlserver.sql`
 
-This taught me two things:
-
-1. Avoid Workflow Engines as long as possible in a project!
-2. Any kind of Domain Specific Language, such as XAML, is a leaky abstraction. The code IS the workflow definition.
-
-## Durable Workflow Systems make a Comeback ##
-
-Building reliable background logic, however, is very hard. Your API returns a HTTP Status 500, database 
-timeouts, your server crashes, ... so you'll need retry policies, state tables, and you'll need to handle 
-idempotency.
-
-Modern execution engines such as *Temporal* fix this by letting you write ordinary C# code, that automatically 
-survives server crashes, network drops, and process restarts. You just sprinkle in some primitives provided 
-by a SDK.
-
-But Solutions like *Temporal* come with quite a complex infrastructure, that requires you to deploy, host and 
-operate an entire distributed platform just to manage state. This is often too much upfront investment for a 
-quick üroof of concept.
-
-That's why SqlFlow requires just a Postgres or SQL Server  database to manage state, and comes with a .NET SDK 
-to provide primitives for durable workflow execution. In the next sections you'll learn how to use it.
-
-## .NET Setup ##
+# Getting Started with the .NET SDK #
 
 To include SqlFlowSdk in your project, install the NuGet package using the .NET CLI:
 
@@ -76,6 +48,10 @@ dotnet add package SqlFlowSdk.Postgres
 dotnet add package SqlFlowSdk.SqlServer
 ```
 
+## Control Panel Extensions API in .NET ##
+
+As of now the Control Panel Endpoints are only available in .NET, they might be ported to other SDKs.
+
 If you want to add the Management Endpoints for the Control Panel, you need to add:
 
 ```
@@ -88,197 +64,9 @@ Also add the Management API Implementation for the Database Management System to
 dotnet add package SqlFlowSdk.Management.Postgres
 dotnet add package SqlFlowSdk.Management.SqlServer
 ```
+# .NET SDK: Building a Durable AI Agent #
 
-You'll then need to create the `ssf` Database Schema in the DBMS of your choice:
-
-* `sql/ssf-postgres.sql`
-* `sql/ssf-sqlserver.sql`
-
-## Quick Start: Order Processing using SqlFlow ##
-
-Start by creating the `ssf` Database Schema, that holds all required database objects for the Workflow system:
-
-* `sql/ssf-postgres.sql`
-* `sql/ssf-sqlserver.sql`
-
-Then define an `IJob`, which is going to model an Order Fulfillment Task:
-
-```csharp
-public class FulfillOrderJob : IJob<OrderData, FulfillOrderResult>
-{
-    private readonly ILogger<FulfillOrderJob> _logger;
-
-    private readonly PaymentService _paymentService;
-    private readonly ShippingService _shippingService;
-    
-    public FulfillOrderJob(
-        PaymentService paymentService,
-        ShippingService shippingService,
-        ILogger<FulfillOrderJob> logger)
-    {
-        _paymentService = paymentService;
-        _shippingService = shippingService;
-        _logger = logger;
-    }
-
-    public async Task<FulfillOrderResult> ExecuteAsync(TaskContext ctx, OrderData order)
-    {
-        _logger.LogInformation("Processing Order {OrderId}", order.OrderId);
-
-        // Process the Payment
-        PaymentResult payment = await ctx.Step("charge-payment", async () =>
-        {
-            return await _paymentService.ChargeAsync(order.OrderId, order.Amount);
-        });
-
-        if (!payment.Success)
-        {
-            throw new Exception($"Payment failed: {payment.ErrorMessage}");
-        }
-
-        // Wait for Warehouse
-        _logger.LogInformation("Waiting for pick signal...");
-
-        JsonNode pickPayload = await ctx.AwaitEvent(
-            eventName: $"order-picked:{order.OrderId}",
-            stepName: "wait-for-picking"
-        );
-
-        // Ship the items
-        ShippingResult shipment = await ctx.Step("ship-items", async () =>
-        {
-            return await _shippingService.ShipAsync(order.OrderId, order.Items);
-        });
-
-        return new FulfillOrderResult { Status = "Fulfilled", Tracking = shipment.TrackingNumber };
-    }
-}
-```
-
-We then register it in the `Program.cs` like this:
-
-```csharp
-// Your custom connection string
-string connectionString = "Server=localhost;Database=DeinDatenbankName;Integrated Security=True;TrustServerCertificate=True";
-
-// Add Logging
-builder.Services.AddLogging();
-
-// Register Services
-builder.Services.AddSingleton<PaymentService>();
-builder.Services.AddSingleton<ShippingService>();
-builder.Services.AddSingleton<OrderService>();
-
-// Register the SqlFlow SDK
-builder.Services.AddSqlFlowSdk(connectionString);
-```
-
-We can then create a Background Workers for polling and executing tasks:
-
-```csharp
-// Configure Workers and Jobs. In this example, we have two different queues
-// for standard and VIP orders, each with its own processing configuration.
-builder.Services.AddSqlFlowWorker("standard-orders-queue", worker =>
-{
-    worker
-        .SetConcurrency(1)
-        .SetPollInterval(1);
-
-    worker.AddJob<FulfillOrderJob, OrderData, FulfillOrderResult>("standard-fulfill", options =>
-    {
-        options.WithMaxAttempts(3);
-    });
-});
-
-builder.Services.AddSqlFlowWorker("vip-orders-queue", worker =>
-{
-    worker
-        .SetConcurrency(5)
-        .SetPollInterval(0.5);
-
-    worker.AddJob<FulfillOrderJob, OrderData, FulfillOrderResult>("vip-fulfill", options =>
-    {
-        options.WithMaxAttempts(5);
-    });
-});
-```
-
-And finally we define two endpoints to create an order and emit events to it:
-
-```csharp
-// A User places an order through this endpoint. Depending on whether it's a VIP order or not, it gets published
-// to a different queue with different processing configurations.
-app.MapPost("/order", async (IJobPublisher publisher, [FromBody] OrderData request, CancellationToken ct) =>
-{
-    // VIP Orders go to the VIP Queue with a different Job configuration (e.g. more retries, faster processing, etc.)
-    string queueName = request.IsPremium ? "vip-orders-queue" : "standard-orders-queue";
-
-    SpawnResult result = await publisher.PublishAsync<FulfillOrderJob, OrderData>("vip-fulfill", request, ct);
-
-    return Results.Ok(new { RunId = result.RunId });
-});
-
-app.MapPost("/order/{orderId}/picked", async (OrderService orderService, IEventPublisher publisher, string orderId, [FromBody] PickingData data, CancellationToken ct) =>
-{
-    // We fetch the OrderData to determine which queue to publish the event to. In a real application, you might have this
-    // information cached or included in the request to avoid an extra database call.
-    OrderData orderData = await orderService.GetOrderByIdAsync(orderId);
-
-    // Premium Customers Events go to the VIP Queue with a different Job configuration (e.g. more retries, faster processing, etc.)
-    string queueName = orderData.IsPremium ? "vip-orders-queue" : "standard-orders-queue";
-
-    // This wakes up the suspended task waiting for "order-picked:{orderId}"
-    await publisher.EmitEventAsync(
-        queue: queueName,
-        eventName: $"order-picked:{orderId}",
-        payload: data,
-        ct
-    );
-
-    return Results.Ok(new { Message = "Pick signal sent. Workflow will resume." });
-});
-```
-
-To kick off an Order send the JSON Payload to the endpoints:
-
-```http
-### Creates Order "ORD-123"
-POST https://localhost:5000/order
-Content-Type: application/json
-Accept-Language: en-US,en;q=0.5
-{
-  "orderId": "ORD-123",
-  "isPremium": true,
-  "amount": 99.50,
-  "items": ["Item A", "Item B"]
-}
-
-### Continues running Order "ORD-123"
-POST https://localhost:5000/order/ORD-123/picked
-Content-Type: application/json
-{ 
-  "picker": "Philipp",
-  "pickedAt": "2024-06-01T10:15:30Z"
-}
-```
-
-## Management, Control Panel and Diagnosing the System Health ##
-
-SqlFlow comes with a Management API and a Control Panel to understand you systems health and quickly 
-find out how many tasks are being processed, which tasks are slow, which tasks currently await events, 
-why tasks are failing and search for specific tasks.
-
-<a href="https://raw.githubusercontent.com/bytefish/SqlFlow/main/doc/control-panel-event-blockades.jpg">
-    <img src="https://raw.githubusercontent.com/bytefish/SqlFlow/main/doc/control-panel-event-blockades.jpg" alt="Screenshot of Event Blockades within the SqlFlow System" width="100%" />
-</a>
-
-
-It isn't meant to replace your Helm or Grafana dashboards, that also provide alarms and such. Think of it 
-as another tool to observe your system at a much deeper level, than coarse metrics could provide.
-
-## A more complete application: Durable AI Agents ##
-
-### What we are going to build ###
+## What we are going to build ##
 
 The classic examples for durable execution are usually e-commerce checkouts or payment processing scenarios. But there's another rapidly 
 growing use case developers are dealing with: Autonomous AI Agents. Building AI agents that interact with external APIs, write code, 
@@ -293,7 +81,7 @@ Traditional approaches require you to build complex state machines, database pol
 we can write our agent as standard, sequential C# code. The framework will automatically checkpoint the state to Postgres, sleep without 
 blocking server threads, and wake up exactly where it left off.
 
-### Building an Agent Job ###
+## Building an Agent Job ##
 
 To demonstrate how durable execution with SqlFlow works, we are going to build an autonomous AI agent that 
 fixes bugs. The workflow is quickly laid out as: 
@@ -347,7 +135,7 @@ public class AgentResult
 }
 ```
 
-### The LLM Service ###
+## The LLM Service ##
 
 Next, we need a service to handle the AI code generation. In the real world, calling an LLM is a slow (and expensive) and the HTTP 
 requests might fail or time out. We are wrapping these expensive calls with SqlFlow, so we don't lose all our state, if the 
@@ -456,7 +244,7 @@ public class GitHubService : IGitHubService
 }
 ```
 
-### The Autonomous Agent Job ###
+## The Autonomous Agent Job ##
 
 We define our logic inside an `IJob`. The magic is in the `ctx.Step` method: every time a step completes, its result is automatically checkpointed to the Postgres 
 database. If the process crashes or is restarted, the framework replays the job. It skips the already completed steps and loads their results directly from 
@@ -568,7 +356,7 @@ public class AutonomousAgentJob : IJob<AgentTask, AgentResult>
 }
 ```
 
-### Putting It All Together ###
+## Putting It All Together: Dependency Injection ##
 
 What's left is registering all dependencies.
 
