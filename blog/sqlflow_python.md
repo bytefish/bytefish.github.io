@@ -191,7 +191,7 @@ The workflow is just a normal Python method, that takes a `TaskContext` and para
 its result is automatically checkpointed to the Postgres database. If the process crashes or is restarted, the framework replays the job. It skips the already 
 completed steps and loads their results directly from the database.
 
-And then instead of blocking a thread with `Task.Delay` or an infinite polling loop, we use `ctx.await_event` to wait for human interaction. This 
+And then instead of blocking a thread by sleeping or an infinite polling loop, we use `ctx.await_event` to wait for human interaction. This 
 instructs the engine to safely suspend the workflow state to the database and free up the worker until an external system fires the specific event 
 being awaited.
 
@@ -272,9 +272,7 @@ async def autonomous_agent_workflow(ctx: TaskContext, params: dict) -> dict:
         return AgentResult(success=False, reason="Escalated to human supervisor after 3 failures.").model_dump()
 ```
 
-We'll use 
-
-The FastAPI application serves as the host for our SqlFlow runtime.
+A FastAPI application then serves as the host for our SqlFlow runtime.
 
 During application startup, we:
 
