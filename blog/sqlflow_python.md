@@ -13,11 +13,7 @@ The SQL Script for creating the SqlFlow Database Schema is available here:
 
 * [https://github.com/bytefish/SqlFlow/blob/main/sql/](https://github.com/bytefish/SqlFlow/blob/main/sql)
 
-The SQL Script for creating the SqlFlow Database Schema is available here:
-
-* [https://github.com/bytefish/SqlFlow/blob/main/sql/](https://github.com/bytefish/SqlFlow/blob/main/sql)
-
-It took a large deal of inspiration from [Absurd], but features a simpler database model. 
+It took a large deal of inspiration from Absurd, but it features a much simpler database model. 
 
 [Absurd]: https://github.com/earendil-works/absurd
 
