@@ -26,6 +26,15 @@ The SQL Scripts for creating the SqlFlow Database Schema for SQL Server:
 * [SQL Server: `sql/ssf-sqlserver-minimal.sql`](https://github.com/bytefish/SqlFlow/blob/main/sql/ssf-sqlserver-minimal.sql)
 * [SQL Server (Service Broker): `sql/ssf-sqlserver-signaling.sql`](https://github.com/bytefish/SqlFlow/blob/main/sql/ssf-sqlserver-signaling.sql)
 
+Choose your preferred language to see how to install the SDK and build a real-world durable AI Agent that handles long-running LLM calls and asynchronous human approvals:
+
+* [.NET SDK Tutorial](https://github.com/bytefish/SqlFlow/blob/main/docs/dotnet.md)
+* [Java SDK Tutorial](https://github.com/bytefish/SqlFlow/blob/main/java.md)
+* [Python SDK Tutorial](https://github.com/bytefish/SqlFlow/blob/main/python.md)
+* [Go SDK Tutorial](https://github.com/bytefish/SqlFlow/blob/main/go.md)
+
+## What's new compared to Absurd
+
 While SqlFlow took a large deal of inspiration from Absurd, it expands significantly on the core concepts to deliver a production-ready, multi-language ecosystem. It features:
 
 * A much simpler database model optimized for high throughput.
@@ -34,8 +43,6 @@ While SqlFlow took a large deal of inspiration from Absurd, it expands significa
 * Native SDKs for **.NET, Java, Python, and Go**.
 
 SqlFlow also comes with a Management API and a Control Panel to understand your system's health, monitor task processing, debug slow tasks, inspect event blockades, and search for specific executions.
-
-Please note, that there's also NATS support for signaling!
 
 ## Core Concepts & Terminology
 
@@ -115,15 +122,6 @@ public async Task<Result> ExecuteAsync(TaskContext ctx, Order order)
 * If the server crashes during `_stripe.ChargeAsync()`, the workflow automatically restarts. 
 * If it crashes *after*, SqlFlow skips the Stripe call on reboot and loads the payment result directly from the database. 
 * When `AwaitEvent` is called, the state is serialized to the database and the application uses zero CPU/RAM until the `"manager-approval"` event is fired.
-
-## Getting Started
-
-Choose your preferred language to see how to install the SDK and build a real-world durable AI Agent that handles long-running LLM calls and asynchronous human approvals:
-
-* [.NET SDK Tutorial](https://github.com/bytefish/SqlFlow/blob/main/docs/dotnet.md)
-* [Java SDK Tutorial](https://github.com/bytefish/SqlFlow/blob/main/java.md)
-* [Python SDK Tutorial](https://github.com/bytefish/SqlFlow/blob/main/python.md)
-* [Go SDK Tutorial](https://github.com/bytefish/SqlFlow/blob/main/go.md)
 
 ## HTTP Requests
 
