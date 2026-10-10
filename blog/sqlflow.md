@@ -1,4 +1,4 @@
-title: Introducing SqlFlow: Building Resilient Workflows with SqlFlow (Go SDK)
+title: Introducing SqlFlow: Building Resilient Workflows with SqlFlow
 date: 2026-08-23 23:10
 tags: go, sqlflow
 category: go
