@@ -6,7 +6,7 @@ slug: sqlflow
 author: Philipp Wagner
 summary: This article shows how to build an Autonomous AI Agent with SqlFlow
 
-SqlFlow is a simple durable execution workflow system for PostgreSQL and SQL Server. It handles scheduling. state checkpointing, and retries without needing heavy external workflow engines like Temporal or Cadence:
+SqlFlow is a simple durable execution workflow system for PostgreSQL and SQL Server. It handles scheduling, state checkpointing, and retries without needing heavy external workflow engines like Temporal or Cadence:
 
 * [https://github.com/bytefish/SqlFlow](https://github.com/bytefish/SqlFlow)
 
