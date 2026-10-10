@@ -76,7 +76,7 @@ SqlFlow adapts this signaling layer natively to your chosen infrastructure:
 
 - **PostgreSQL:** Uses the built-in `LISTEN / NOTIFY` mechanism. A single connection per application instance listens for `NOTIFY` events and instantly wakes up the local worker threads.
 - **SQL Server:** Uses **Service Broker**. Instead of locking tables to wait for changes, SqlFlow leverages SQL Server's internal message bus to push wake-up notifications to idle workers, taking the load off the standard query engine.
-- **NATS JetStream (Optional):** At massive distributed scale, database signaling can become a bottleneck. SqlFlow allows you to swap the Signal Listener to **NATS**. The database remains the source of truth, but the pub/sub signaling happens entirely over a high-speed broker. *(See [High-Performance Signaling with NATS] (https://github.com/bytefish/SqlFlow/blob/main/docs/nats-signaling.md))*
+- **NATS JetStream (Optional):** At massive distributed scale, database signaling can become a bottleneck. SqlFlow allows you to swap the Signal Listener to **NATS**. The database remains the source of truth, but the pub/sub signaling happens entirely over a high-speed broker. *(See [High-Performance Signaling with NATS](https://github.com/bytefish/SqlFlow/blob/main/docs/nats-signaling.md))*
 
 ### 3. Concurrency and Rate Limiting
 
