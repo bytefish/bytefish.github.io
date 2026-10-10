@@ -33,7 +33,7 @@ Choose your preferred language to see how to install the SDK and build a real-wo
 * [Python SDK Tutorial](https://github.com/bytefish/SqlFlow/blob/main/python.md)
 * [Go SDK Tutorial](https://github.com/bytefish/SqlFlow/blob/main/go.md)
 
-## What's new compared to Absurd
+## SqlFlow compared to Absurd
 
 While SqlFlow took a large deal of inspiration from Absurd, it expands significantly on the core concepts to deliver a production-ready, multi-language ecosystem. It features:
 
