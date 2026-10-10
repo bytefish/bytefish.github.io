@@ -1,5 +1,5 @@
 title: Introducing SqlFlow: Building Resilient Workflows with SqlFlow
-date: 2026-08-23 23:10
+date: 2026-10-10 12:41
 tags: go, sqlflow
 category: go
 slug: sqlflow
